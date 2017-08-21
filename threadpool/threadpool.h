@@ -1,3 +1,10 @@
+/*******************************************************
+ @Author: zhezhaoxu
+ @Created Time : 2017年08月18日
+ @File Name: threadpool.h
+ @Description: 线程池
+ ******************************************************/
+
 #ifndef UTILS_THREADPOOL_THREADPOOL_H_
 #define UTILS_THREADPOOL_THREADPOOL_H_
 
@@ -6,24 +13,30 @@
 #include <condition_variable>
 #include <atomic>
 #include <vector>
-#include <deque>
+#include <queue>
 #include <iostream>
 
 namespace utils
 {
 
-template <typename T, typename U = std::deque<T> >
+class Runable 
+{
+	virtual void run() = 0;
+};
+
+template <typename T = Runable, typename U = std::queue<T> >
 class Threadpool 
 {
 public:
 	typedef T task_type;
 	typedef U queue_type;
 
-	Threadpool(int size = 1) : size_(size) { 
-	}
+	explicit Threadpool(int size = 1) : size_(size) { }
 
 	Threadpool(const Threadpool &) = delete;
 	Threadpool & operator=(const Threadpool &) = delete;
+
+	~Threadpool() {  }
 
 	void start() {
 		shutdown_ = false;
@@ -35,7 +48,7 @@ public:
 
 	void addTask(const task_type &task) {
 		std::unique_lock<std::mutex> lck(mtx_);
-		queue_.push_back(task);
+		queue_.push(task);
 		lck.unlock();
 		cv_.notify_one();
 	}
@@ -56,11 +69,11 @@ public:
 				break;
 			}
 
-			auto t = queue_.front();
-			queue_.pop_front();
+			auto task = queue_.front();
+			queue_.pop();
 			lck.unlock();
 
-			t.run();
+			task.run();
 		}
 	}
 
@@ -71,14 +84,14 @@ public:
 			shutdown_ = true;
 			cv_.notify_all();
 		}
-		for (auto & t : threads_) {
-			t.join();
+		for (auto & th : threads_) {
+			th.join();
 		}
 	}
 
 private:
 	std::vector<std::thread> threads_;
-	std::deque<task_type> queue_;
+	queue_type queue_;
 	int size_;
 
 	std::mutex mtx_;

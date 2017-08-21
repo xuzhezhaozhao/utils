@@ -10,7 +10,7 @@ public:
 
 	void run() {
 		long long i, sum = 0;
-		for (i = 0; i < 10000000000LL; ++i) {
+		for (i = 0; i < 10000000LL; ++i) {
 			sum += i;
 		}
 		++c;
