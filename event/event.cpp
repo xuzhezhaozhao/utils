@@ -10,6 +10,7 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <sys/epoll.h>
+#include <string.h>
 
 namespace utils {
 
@@ -23,8 +24,19 @@ static void* reallocv_(void *block, size_t /* osize */, size_t nsize) {
 	return newblock;
 }
 
-static void *reallocv(void *block, size_t onum, size_t nnum, size_t size) {
-	return reallocv_(block, onum * size, nnum * size);
+static void *reallocv(void *block, size_t onum, size_t nnum, size_t esize) {
+	return reallocv_(block, onum * esize, nnum * esize);
+}
+
+static void *creallocv(void *block, size_t onum, size_t nnum, size_t esize) {
+	void *newblock = reallocv(block, onum, nnum, esize);
+	if (!newblock) {
+		return NULL;
+	}
+	if (onum < nnum) {
+		memset((char *)newblock + onum * esize, 0, (nnum - onum) * esize);
+	}
+	return block;
 }
 
 int BaseEvent::AddEvent(int fd, int events, void *args, event_handle_t event_handle) {
@@ -32,7 +44,7 @@ int BaseEvent::AddEvent(int fd, int events, void *args, event_handle_t event_han
 	if (fd >= size_) {
 		int newsize = size_ * 2;
 		void * newblock = 
-			reallocv(event_info_vector_, size_, newsize, sizeof(event_info));
+			creallocv(event_info_vector_, size_, newsize, sizeof(event_info));
 		if (!newblock) {
 			// TODO 出错处理
 			return -1;
@@ -40,7 +52,7 @@ int BaseEvent::AddEvent(int fd, int events, void *args, event_handle_t event_han
 		event_info_vector_ = (event_info *)newblock;
 	}
 
-	struct event_info * ev_info = fpool(fd);
+	struct event_info * ev_info = get_event_info(fd);
 	int op;
 	struct epoll_event ev;
 	ev.data.fd = fd;
@@ -77,7 +89,7 @@ int BaseEvent::AddTimerEvent(int timeout, void *args, time_handle_t time_handle)
 }
 
 int BaseEvent::DelEvent(int fd) {
-	struct event_info * ev_info = fpool(fd);
+	struct event_info * ev_info = get_event_info(fd);
 	if (!ev_info->valid) {
 		return 0;
 	}
@@ -118,7 +130,7 @@ void BaseEvent::event_loop() {
 		for (int i = 0; i < nfds; ++i) {
 			int fd = events[i].data.fd;
 			int mask = events[i].events;
-			fpool(fd)->handle(fd, mask, NULL);
+			get_event_info(fd)->handle(fd, mask, NULL);
 		}
 	}
 }

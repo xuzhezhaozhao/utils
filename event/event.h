@@ -58,7 +58,7 @@ private:
 	struct timer_info {
 	};
 
-	struct event_info *fpool(int fd) {
+	struct event_info *get_event_info(int fd) {
 		return &event_info_vector_[fd];
 	}
 

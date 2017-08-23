@@ -5,4 +5,6 @@
  @Description: 字符串操作
  ******************************************************/
 
+#include <string>
 
+std::string pack_string();
