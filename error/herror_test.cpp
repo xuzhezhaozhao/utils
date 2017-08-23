@@ -6,28 +6,12 @@
  ******************************************************/
 
 #include "herror.h"
+#include "gtest/gtest.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <iostream>
 
-void error(const char *location, const char *msg)
-{
-  printf("Error at %s: %s\n", location, msg);
-}
-
-void test_print_stack() {
-		//utils::herror::print_stack_fd();
-	std::cout <<  utils::herror::get_stackinfo() << std::endl;
-}
-
-int main()
-{
-	if (open("non_exit", O_RDONLY)) {
-		std::cout << utils::herror::err_atstr("open failed") << std::endl;
-	}
-	test_print_stack();
-	
-	return 0;
+TEST(herrorTest, one) {
 }
