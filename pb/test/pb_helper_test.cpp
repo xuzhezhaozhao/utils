@@ -7,7 +7,7 @@
 
 
 #include "../pb_helper.h"
-#include "proto/person.pb.h"
+#include "person.pb.h"
 #include "gtest/gtest.h"
 
 #include <iostream>
@@ -18,6 +18,14 @@ TEST(PB_HELPER, debug)
 {
 	Person person;
 	person.set_email("835997137@qq.com 徐哲钊");
+	person.mutable_ticket()->Add(1);
+	person.mutable_ticket()->Add(2);
+	person.mutable_ticket()->Add(3);
+	person.mutable_ticket()->Add(4);
+
+	person.mutable_addr()->Add("abc");
+	person.mutable_addr()->Add("def");
+	person.mutable_addr()->Add("ghi");
 
 	std::cout << pb2Json(&person) << std::endl;
 }

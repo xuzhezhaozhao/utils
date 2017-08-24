@@ -236,6 +236,10 @@ std::string valueToQuotedString(const char* value) {
 	return result;
 }
 
+std::string valueToQuotedString(const std::string& value) {
+	return valueToQuotedString(value.data());
+}
+
 // https://github.com/upcaste/upcaste/blob/master/src/upcore/src/cstring/strnpbrk.cpp
 static char const* strnpbrk(char const* s, char const* accept, size_t n) {
 	assert((s || !n) && accept);

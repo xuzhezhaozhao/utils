@@ -20,6 +20,7 @@ std::string valueToString(double value, bool useSpecialFloats,
 std::string valueToString(double value);
 std::string valueToString(bool value);
 std::string valueToQuotedString(const char* value);
+std::string valueToQuotedString(const std::string& value);
 std::string valueToQuotedStringN(const char* value, unsigned length);
 
 std::string pack_string();
