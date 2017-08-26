@@ -16,23 +16,16 @@ namespace str_helper {
 std::string valueToString(int64_t value);
 std::string valueToString(uint64_t value);
 std::string valueToString(int value);
+std::string valueToString(long long int value);
+std::string valueToString(unsigned long long int value);
 std::string valueToString(unsigned int value);
 std::string valueToString(double value, bool useSpecialFloats,
 							 unsigned int precision);
-
-
 std::string valueToString(double value);
 std::string valueToString(bool value);
 std::string valueToQuotedString(const char* value);
-inline std::string valueToQuotedString(const std::string& value) {
-	return valueToQuotedString(value.data());
-}
+std::string valueToQuotedString(const std::string& value);
 std::string valueToQuotedStringN(const char* value, unsigned length);
-
-// 主要用在模板中
-inline char valueToString(char value) { return value; }
-inline const char* valueToString(const char* value) { return value; }
-inline std::string valueToString(std::string value) { return value; }
 
 }
 }

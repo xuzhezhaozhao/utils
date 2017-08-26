@@ -15,7 +15,8 @@ namespace utils
 namespace pb_helper
 {
 
-std::string pb2Json(const google::protobuf::Message *message);
+// oops, 造轮子, protobuf::util 中已经实现了该功能
+std::string protobufToJsonString(const google::protobuf::Message* message);
 
 }
 }

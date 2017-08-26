@@ -125,6 +125,13 @@ std::string valueToString(unsigned int value) {
 	return valueToString(uint64_t(value));
 }
 
+std::string valueToString(long long int value) {
+	return valueToString(int64_t(value));
+}
+std::string valueToString(unsigned long long int value) {
+	return valueToString(uint64_t(value));
+}
+
 std::string valueToString(double value, bool useSpecialFloats,
 							 unsigned int precision) {
 	// Allocate a buffer that is more than large enough to store the 16 digits
@@ -234,6 +241,10 @@ std::string valueToQuotedString(const char* value) {
 	}
 	result += "\"";
 	return result;
+}
+
+std::string valueToQuotedString(const std::string& value) {
+	return valueToQuotedString(value.data());
 }
 
 // https://github.com/upcaste/upcaste/blob/master/src/upcore/src/cstring/strnpbrk.cpp

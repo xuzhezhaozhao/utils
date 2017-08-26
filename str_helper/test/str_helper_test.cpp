@@ -79,4 +79,13 @@ TEST(STR_STRING_HELPER, pack_string) {
 	ASSERT_STREQ(pack_string("abc", '-', "ABC").data(), "abc-ABC");
 	ASSERT_STREQ(pack_string(std::string("abc"), '-', "ABC", 1, 2, 3).data(),
 				 "abc-ABC123");
+	short sh = 123;
+	unsigned short ush = 123;
+	ASSERT_STREQ(pack_string(1, '-', true, "-", 'a', '-', "abc", '-',
+							 std::string("string"), '-', 123456789012372352ULL,
+							 '-', -32, '-', 23456U, '-', 1234LL, '-', 123L, '-',
+							 123UL, '-', sh, '-', ush, '\n', "徐哲钊")
+					 .data(),
+				 "1-true-a-abc-string-123456789012372352--32-23456-1234-123-"
+				 "123-123-123\n徐哲钊");
 }
