@@ -15,8 +15,6 @@
 
 namespace {
 using namespace utils::str_helper;
-
-
 template <typename T, typename... Args>
 struct PackString0 {
 	static void pack_string0(std::string& result, T param, Args... args) {
@@ -28,13 +26,6 @@ template <typename T>
 struct PackString0<T> {
 	static void pack_string0(std::string& result, T param) {
 		result += valueToString(param);
-	}
-};
-
-template <typename... Args>
-struct PackString {
-	static void pack_string0(std::string& result, Args... args) {
-		PackString0<Args...>::pack_string0(result, args...);
 	}
 };
 
@@ -55,8 +46,8 @@ namespace str_helper {
 template <typename... Args>
 std::string pack_string(Args... args) {
 	std::string result;
-	//__pack_string0(result, args...);
-	PackString<Args...>::pack_string0(result, args...);
+	__pack_string0(result, args...);
+	//PackString0<Args...>::pack_string0(result, args...);
 	return result;
 }
 

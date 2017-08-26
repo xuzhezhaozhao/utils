@@ -20,9 +20,6 @@ std::string valueToString(unsigned int value);
 std::string valueToString(double value, bool useSpecialFloats,
 							 unsigned int precision);
 
-inline char valueToString(char value) { return value; }
-inline const char* valueToString(const char* value) { return value; }
-inline std::string valueToString(std::string value) { return value; }
 
 std::string valueToString(double value);
 std::string valueToString(bool value);
@@ -31,6 +28,11 @@ inline std::string valueToQuotedString(const std::string& value) {
 	return valueToQuotedString(value.data());
 }
 std::string valueToQuotedStringN(const char* value, unsigned length);
+
+// 主要用在模板中
+inline char valueToString(char value) { return value; }
+inline const char* valueToString(const char* value) { return value; }
+inline std::string valueToString(std::string value) { return value; }
 
 }
 }
