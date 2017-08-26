@@ -4,6 +4,8 @@
  @File Name: herror.h
  @Description:
  ******************************************************/
+#ifndef UTILS_ERROR_HERROR_H
+#define UTILS_ERROR_HERROR_H
 
 #include <string>
 #include <unistd.h>
@@ -31,3 +33,4 @@ std::string get_stackinfo();
 
 }
 }
+#endif /* ifndef UTILS_ERROR_HERROR_H */

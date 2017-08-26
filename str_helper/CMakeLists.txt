@@ -5,5 +5,5 @@ if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
 endif()
 
 set(CMAKE_CXX_FLAGS "-g -Wall -Werror -std=c++11")
-add_library(str_helper str_helper.cpp)
+add_library(str_helper str_convert.cpp)
 add_subdirectory(test)

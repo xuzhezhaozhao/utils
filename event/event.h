@@ -5,6 +5,9 @@
  @Description:
  ******************************************************/
 
+#ifndef UTILS_EVENT_EVENT_H_
+#define UTILS_EVENT_EVENT_H_
+
 #include <functional>
 #include <exception>
 #include <list>
@@ -73,3 +76,5 @@ private:
 };
 
 }	// namespace utils
+
+#endif /* ifndef UTILS_EVENT_EVENT_H_ */

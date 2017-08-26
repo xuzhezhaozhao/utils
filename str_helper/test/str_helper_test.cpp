@@ -73,3 +73,10 @@ TEST(STR_STRING_HELPER, json) {
 				 "\"\\\"徐哲钊\\\" \\\"jingchenghuang\\\"\"");
 	// TODO control character
 }
+
+TEST(STR_STRING_HELPER, pack_string) {
+	ASSERT_STREQ(pack_string(1, 2, 3).data(), "123");
+	ASSERT_STREQ(pack_string("abc", '-', "ABC").data(), "abc-ABC");
+	ASSERT_STREQ(pack_string(std::string("abc"), '-', "ABC", 1, 2, 3).data(),
+				 "abc-ABC123");
+}

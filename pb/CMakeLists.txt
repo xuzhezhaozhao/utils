@@ -7,7 +7,7 @@ endif()
 set(CMAKE_CXX_FLAGS "-g -Wall -Werror -std=c++11")
 
 include_directories(${CMAKE_SOURCE_DIR}/../)
-link_directories(${CMAKE_SOURCE_DIR}/../strings/build/)
+link_directories(${CMAKE_SOURCE_DIR}/../str_helper/build/)
 
 add_library(pb_helper pb_helper.cpp)
 add_subdirectory(test)

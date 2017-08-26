@@ -5,7 +5,7 @@
  @Description:
  ******************************************************/
 
-#include "strings/str_helper.h"
+#include "str_helper/str_helper.h"
 
 #include <google/protobuf/descriptor.h>
 #include <google/protobuf/message.h>

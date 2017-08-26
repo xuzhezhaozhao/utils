@@ -4,6 +4,8 @@
  @File Name: pb_helper.h
  @Description:
  ******************************************************/
+#ifndef UTILS_PB_PB_HELPER_H_
+#define UTILS_PB_PB_HELPER_H_
 
 #include <google/protobuf/message.h>
 #include <string>
@@ -17,3 +19,5 @@ std::string pb2Json(const google::protobuf::Message *message);
 
 }
 }
+
+#endif /* ifndef UTILS_PB_PB_HELPER_H_ */

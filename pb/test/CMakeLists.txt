@@ -17,7 +17,7 @@ add_custom_command(
 
 add_executable(pb_helper_test pb_helper_test.cpp person.pb.cc)
 target_link_libraries(pb_helper_test pb_helper str_helper gtest gtest_main protobuf pthread)
-link_directories(${CMAKE_SOURCE_DIR}/../strings/build/)
+link_directories(${CMAKE_SOURCE_DIR}/../str_helper/build/)
 
 add_custom_target(unittest ./pb_helper_test
 				DEPENDS pb_helper_test)

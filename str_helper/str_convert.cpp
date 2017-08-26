@@ -1,12 +1,12 @@
 /*******************************************************
  @Author: zhezhaoxu
- @Created Time : 2017年08月24日 星期四 10时14分27秒
- @File Name: str_helper.cpp
+ @Created Time : 2017年08月25日 星期五 22时52分08秒
+ @File Name: str_convert.cpp
  @Description:
  @Reference: jsoncpp (https://github.com/open-source-parsers/jsoncpp)
  ******************************************************/
 
-#include "str_helper.h"
+#include "str_convert.h"
 
 #include <assert.h>
 #include <string.h>
@@ -236,10 +236,6 @@ std::string valueToQuotedString(const char* value) {
 	return result;
 }
 
-std::string valueToQuotedString(const std::string& value) {
-	return valueToQuotedString(value.data());
-}
-
 // https://github.com/upcaste/upcaste/blob/master/src/upcore/src/cstring/strnpbrk.cpp
 static char const* strnpbrk(char const* s, char const* accept, size_t n) {
 	assert((s || !n) && accept);
@@ -255,7 +251,6 @@ static char const* strnpbrk(char const* s, char const* accept, size_t n) {
 	}
 	return NULL;
 }
-
 std::string valueToQuotedStringN(const char* value, unsigned length) {
 	if (value == NULL) return "";
 	// Not sure how to handle unicode...
