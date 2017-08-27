@@ -6,4 +6,5 @@ endif()
 
 set(CMAKE_CXX_FLAGS "-g -Wall -Werror -std=c++11 -pthread")
 
-add_subdirectory(test)
+add_executable(threadpool_test threadpool_test.cpp)
+target_link_libraries(threadpool_test pthread)

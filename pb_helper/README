@@ -1,0 +1,6 @@
+## pb_helper
+提供一些 protobuf 的辅助函数，功能如下：
+
+1. protobufToJsonString()
+将 protobuf 类转为 Json 格式的字符串.
+(ps: protobuf::util 中已经提供了类似功能)

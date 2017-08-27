@@ -5,7 +5,7 @@
  @Description:
  ******************************************************/
 
-#include "event.h"
+#include "pevent.h"
 
 #include <errno.h>
 #include <stdlib.h>
@@ -99,7 +99,7 @@ int BaseEvent::DelEvent(int fd) {
 	}
 	ev_info->valid = 0;
 	return 0;
-}
+};
 
 int BaseEvent::init() {
 	epfd_ = epoll_create(1024);

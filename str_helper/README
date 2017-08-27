@@ -1,0 +1,8 @@
+## str_helper
+提供一些字符串辅助函数，功能如下：
+
+1. valueToString()
+各种基本类型到 string 的转换
+
+2. pack_string()
+将所有参数打包在一起形成字符串
