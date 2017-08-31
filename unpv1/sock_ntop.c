@@ -1,7 +1,7 @@
 /*******************************************************
  @Author: zhezhaoxu
  @Created Time : 2017年08月20日 星期日 23时15分17秒
- @File Name: unp.cpp
+ @File Name: sock_ntop.c
  @Description:
  ******************************************************/
 
@@ -11,6 +11,7 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 
+// unpv1 p87 (lib/sock_ntop.c)
 char *sock_ntop(const struct sockaddr *sa, socklen_t salen) {
 	char portstr[8];
 	static char str[128];
