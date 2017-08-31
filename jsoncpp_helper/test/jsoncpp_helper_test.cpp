@@ -10,54 +10,55 @@
 #include "json/json.h"
 
 TEST(JSONCPP_HELPER, basic) {
+	using namespace utils::jsoncpp_helper;
 	Json::Value value;
-	ASSERT_TRUE(!checkJsoncppArgs(value, "id", jsoncpp_helper::int32_tag));
+	ASSERT_TRUE(!checkJsoncppArgs(value, "id", int32_tag));
 	value["id"] = 158;
-	ASSERT_TRUE(checkJsoncppArgs(value, "id", jsoncpp_helper::int32_tag));
-	ASSERT_TRUE(checkJsoncppArgs(value, "id", jsoncpp_helper::uint32_tag));
-	ASSERT_TRUE(checkJsoncppArgs(value, "id", jsoncpp_helper::int64_tag));
-	ASSERT_TRUE(checkJsoncppArgs(value, "id", jsoncpp_helper::uint64_tag));
-	ASSERT_TRUE(checkJsoncppArgs(value, "id", jsoncpp_helper::numeric_tag));
+	ASSERT_TRUE(checkJsoncppArgs(value, "id", int32_tag));
+	ASSERT_TRUE(checkJsoncppArgs(value, "id", uint32_tag));
+	ASSERT_TRUE(checkJsoncppArgs(value, "id", int64_tag));
+	ASSERT_TRUE(checkJsoncppArgs(value, "id", uint64_tag));
+	ASSERT_TRUE(checkJsoncppArgs(value, "id", numeric_tag));
 
-	ASSERT_TRUE(!checkJsoncppArgs(value, "name", jsoncpp_helper::string_tag));
+	ASSERT_TRUE(!checkJsoncppArgs(value, "name", string_tag));
 	value["name"] = "zhezhaoxu";
-	ASSERT_TRUE(checkJsoncppArgs(value, "name", jsoncpp_helper::string_tag));
-	ASSERT_TRUE(!checkJsoncppArgs(value, "name", jsoncpp_helper::numeric_tag));
+	ASSERT_TRUE(checkJsoncppArgs(value, "name", string_tag));
+	ASSERT_TRUE(!checkJsoncppArgs(value, "name", numeric_tag));
 
-	ASSERT_TRUE(!checkJsoncppArgs(value, "isgood", jsoncpp_helper::bool_tag));
+	ASSERT_TRUE(!checkJsoncppArgs(value, "isgood", bool_tag));
 	value["isgood"] = true;
-	ASSERT_TRUE(checkJsoncppArgs(value, "isgood", jsoncpp_helper::bool_tag));
-	ASSERT_TRUE(!checkJsoncppArgs(value, "isgood", jsoncpp_helper::int32_tag));
+	ASSERT_TRUE(checkJsoncppArgs(value, "isgood", bool_tag));
+	ASSERT_TRUE(!checkJsoncppArgs(value, "isgood", int32_tag));
 
-	ASSERT_TRUE(!checkJsoncppArgs(value, "score", jsoncpp_helper::double_tag));
+	ASSERT_TRUE(!checkJsoncppArgs(value, "score", double_tag));
 	value["score"] = 3.0;
-	ASSERT_TRUE(checkJsoncppArgs(value, "score", jsoncpp_helper::double_tag));
-	ASSERT_TRUE(checkJsoncppArgs(value, "score", jsoncpp_helper::int32_tag));
+	ASSERT_TRUE(checkJsoncppArgs(value, "score", double_tag));
+	ASSERT_TRUE(checkJsoncppArgs(value, "score", int32_tag));
 
 	value["score"] = 3.2;
-	ASSERT_TRUE(checkJsoncppArgs(value, "score", jsoncpp_helper::double_tag));
-	ASSERT_TRUE(!checkJsoncppArgs(value, "score", jsoncpp_helper::int32_tag));
+	ASSERT_TRUE(checkJsoncppArgs(value, "score", double_tag));
+	ASSERT_TRUE(!checkJsoncppArgs(value, "score", int32_tag));
 
-	ASSERT_TRUE(!checkJsoncppArgs(value, "cars", jsoncpp_helper::array_tag));
+	ASSERT_TRUE(!checkJsoncppArgs(value, "cars", array_tag));
 	value["cars"] = "bwm";
-	ASSERT_TRUE(!checkJsoncppArgs(value, "cars", jsoncpp_helper::array_tag));
+	ASSERT_TRUE(!checkJsoncppArgs(value, "cars", array_tag));
 	value["cars"] = Json::arrayValue;
-	ASSERT_TRUE(checkJsoncppArgs(value, "cars", jsoncpp_helper::array_tag));
+	ASSERT_TRUE(checkJsoncppArgs(value, "cars", array_tag));
 	value["cars"][0] = "bwm";
-	ASSERT_TRUE(checkJsoncppArgs(value, "cars", jsoncpp_helper::array_tag));
+	ASSERT_TRUE(checkJsoncppArgs(value, "cars", array_tag));
 	value["cars"][1] = "benz";
-	ASSERT_TRUE(checkJsoncppArgs(value, "cars", jsoncpp_helper::array_tag));
-	ASSERT_TRUE(!checkJsoncppArgs(value, "cars", jsoncpp_helper::object_tag));
+	ASSERT_TRUE(checkJsoncppArgs(value, "cars", array_tag));
+	ASSERT_TRUE(!checkJsoncppArgs(value, "cars", object_tag));
 
 	value["feed"] = Json::objectValue;
-	ASSERT_TRUE(checkJsoncppArgs(value, "feed", jsoncpp_helper::object_tag));
+	ASSERT_TRUE(checkJsoncppArgs(value, "feed", object_tag));
 	value["feed"]["title"] = "let's go";
-	ASSERT_TRUE(checkJsoncppArgs(value, "feed", jsoncpp_helper::object_tag));
-	ASSERT_TRUE(!checkJsoncppArgs(value, "feed", jsoncpp_helper::array_tag));
+	ASSERT_TRUE(checkJsoncppArgs(value, "feed", object_tag));
+	ASSERT_TRUE(!checkJsoncppArgs(value, "feed", array_tag));
 }
 
 TEST(JSONCPP_HELPER, advanced) {
-	using namespace jsoncpp_helper;
+	using namespace utils::jsoncpp_helper;
 	Json::Value value;
 	value["id"] = 158;
 	value["qq"] = 123456;

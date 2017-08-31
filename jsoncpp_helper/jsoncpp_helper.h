@@ -2,7 +2,9 @@
  @Author: zhezhaoxu
  @Created Time : 2017年08月31日 星期四 22时03分51秒
  @File Name: jsoncpp_helper.h
- @Description:
+ @Description: 
+ 提供如下功能
+ 1. 方便检查 jsoncpp Json::Value 对象的字段类型
  ******************************************************/
 
 #ifndef UTILS_JSONCPP_HELPER_H_
@@ -10,6 +12,7 @@
 
 #include "json/json.h"
 
+namespace utils {
 namespace jsoncpp_helper {
 
 struct null_tag_t {};
@@ -63,6 +66,8 @@ DEFINE_checkJsoncppArgs(string_tag_t, isString);
 DEFINE_checkJsoncppArgs(array_tag_t, isArray);
 DEFINE_checkJsoncppArgs(object_tag_t, isObject);
 
+/********* API ****************************/
+
 // 检查value中字段类型, 使用方法如下
 // checkJsoncppArgs(value, key1, int32_tag, key2, string_tag);
 template <typename... Args>
@@ -70,6 +75,10 @@ bool checkJsoncppArgs(const Json::Value& value, Args... args) {
 	return __checkJsoncppArgs(value, args...);
 }
 
-};
+
+/******** end API ***********************/
+
+}
+}
 
 #endif

@@ -13,6 +13,9 @@
 ### pb_helper
 google protobuf 辅助函数
 
+### jsoncpp_helper
+与 jsoncpp 库相关的辅助函数
+
 ### threadpool
 线程池
 
