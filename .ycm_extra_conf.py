@@ -106,6 +106,8 @@ flags = [
 './deps/googletest/googlemock/include/',
 '-I',
 './deps/protobuf/src',
+'-I',
+'./deps/jsoncpp/dist/',
 ]
 
 

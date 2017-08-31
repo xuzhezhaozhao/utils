@@ -81,6 +81,4 @@ TEST(PB_HELPER, protobufToJsonString) {
 	ASSERT_TRUE(root["addr"][1] == "wuhan");
 	ASSERT_TRUE(root["addr"][2] == "beijing");
 	ASSERT_TRUE(root["addr"][3] == "shenzheng");
-
-	std::cout << pbstring << std::endl;
 }
