@@ -8,6 +8,6 @@
 #define UTILS_STRINGS_STL_HELPER_H_
 
 #include "str_convert.h"
-#include "pack_string.h"
+#include "pack_string.hpp"
 
 #endif /* ifndef UTILS_STRINGS_STL_HELPER_H_ */
