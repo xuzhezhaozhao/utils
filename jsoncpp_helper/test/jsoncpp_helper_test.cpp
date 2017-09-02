@@ -69,11 +69,11 @@ TEST(JSONCPP_HELPER, check_advanced) {
 	value["list"][1] = 2;
 	value["obj"]["home"] = "zhangshu";
 
-	assert(checkJsonArgs(value, "id", int32_tag, "qq", uint32_tag, "wechat",
-						 string_tag, "null", null_tag, "score", double_tag,
-						 "list", array_tag, "obj", object_tag));
+	ASSERT_TRUE(checkJsonArgs(
+		value, "id", int32_tag, "qq", uint32_tag, "wechat", string_tag, "null",
+		null_tag, "score", double_tag, "list", array_tag, "obj", object_tag));
 
-	assert(!checkJsonArgs(value, "addr", string_tag));
+	ASSERT_TRUE(!checkJsonArgs(value, "addr", string_tag));
 }
 
 TEST(JSONCPP_HELPER, setvalue_basic) {
@@ -104,30 +104,6 @@ TEST(JSONCPP_HELPER, setvalue_basic) {
 	ASSERT_TRUE(value["school"] == subvalue);
 }
 
-TEST(JSONCPP_HELPER, setarrayValue_basic) {
-	using namespace utils::jsoncpp_helper;
-	Json::Value value;
-	setJsonArrayValue(value["array"], 158, 19930326, "zhezhao", true, 95.5);
-	checkJsonArgs(value, "array", array_tag);
-	checkJsonArgs(value["array"][0] == 158);
-	checkJsonArgs(value["array"][1] == 19930326);
-	checkJsonArgs(value["array"][2] == "zhezhao");
-	checkJsonArgs(value["array"][3] == true);
-	checkJsonArgs(value["array"][4] == 95.5);
-
-	std::vector<int> tickets = {1, 2, 3};
-	setJsonArrayValue(value["tickets"], tickets, 3);
-	checkJsonArgs(value, "tickets", array_tag);
-	EXPECT_TRUE(value["tickets"][0] == 1);
-	EXPECT_TRUE(value["tickets"][1] == 2);
-	EXPECT_TRUE(value["tickets"][2] == 3);
-
-	setJsonArrayValue(value["info"], "zhezhaoxu", 24);
-	checkJsonArgs(value, "info", array_tag);
-	EXPECT_TRUE(value["info"][0] == "zhezhaoxu");
-	EXPECT_TRUE(value["info"][1] == 24);
-}
-
 TEST(JSONCPP_HELPER, setvalue_advanced) {
 	using namespace utils::jsoncpp_helper;
 	Json::Value value;
@@ -140,3 +116,43 @@ TEST(JSONCPP_HELPER, setvalue_advanced) {
 	ASSERT_TRUE(value["good"] == true);
 	ASSERT_TRUE(value["score"] == 95.5);
 }
+
+TEST(JSONCPP_HELPER, setarrayValue) {
+	using namespace utils::jsoncpp_helper;
+	Json::Value value;
+	setJsonArrayValue(value["array"], 158, 19930326, "zhezhao", true, 95.5);
+	ASSERT_TRUE(checkJsonArgs(value, "array", array_tag));
+	ASSERT_TRUE(checkJsonArgs(value["array"][0] == 158));
+	ASSERT_TRUE(checkJsonArgs(value["array"][1] == 19930326));
+	ASSERT_TRUE(checkJsonArgs(value["array"][2] == "zhezhao"));
+	ASSERT_TRUE(checkJsonArgs(value["array"][3] == true));
+	ASSERT_TRUE(checkJsonArgs(value["array"][4] == 95.5));
+
+	std::vector<int> tickets = {1, 2, 3};
+	setJsonArrayValue(value["tickets"], tickets, 3);
+	ASSERT_TRUE(checkJsonArgs(value, "tickets", array_tag));
+	EXPECT_TRUE(value["tickets"][0] == 1);
+	EXPECT_TRUE(value["tickets"][1] == 2);
+	EXPECT_TRUE(value["tickets"][2] == 3);
+
+	setJsonArrayValue(value["info"], "zhezhaoxu", 24);
+	ASSERT_TRUE(checkJsonArgs(value, "info", array_tag));
+	EXPECT_TRUE(value["info"][0] == "zhezhaoxu");
+	EXPECT_TRUE(value["info"][1] == 24);
+
+	int tags[] = {0, 1, 2};
+	setJsonArrayValue(value["tags"], tags, sizeof(tags) / sizeof(int));
+	ASSERT_TRUE(checkJsonArgs(value, "tags", array_tag));
+	EXPECT_TRUE(value["tags"][0] == 0);
+	EXPECT_TRUE(value["tags"][1] == 1);
+	EXPECT_TRUE(value["tags"][2] == 2);
+
+	char names[128][128] = { "xzz", "hjc", "bob", "ama" };
+	setJsonArrayValue(value["names"], names, 4);
+	ASSERT_TRUE(checkJsonArgs(value, "names", array_tag));
+	EXPECT_TRUE(value["names"][0] == "xzz");
+	EXPECT_TRUE(value["names"][1] == "hjc");
+	EXPECT_TRUE(value["names"][2] == "bob");
+	EXPECT_TRUE(value["names"][3] == "ama");
+}
+
