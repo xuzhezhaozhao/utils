@@ -7,7 +7,7 @@
 
 #include "zevent.h"
 
-// TODO
+// TODO 参照redis
 #include "zevent_epoll.cpp"
 
 namespace utils {
@@ -20,21 +20,21 @@ BaseEvent::~BaseEvent() {
 }
 
 int BaseEvent::init(int setsize) {
-	events_ = (zFileEvent*)malloc(sizeof(zFileEvent) * setsize);
-	fired_ = (zFiredEvent*)malloc(sizeof(zFiredEvent) * setsize);
-	if (events_ == NULL || fired_ == NULL) {
-		errmsg_ += "malloc: ";
+	void* events = malloc(sizeof(zFileEvent) * setsize);
+	void* fired = malloc(sizeof(zFiredEvent) * setsize);
+	if (!events || !fired) {
+		errmsg_ = "malloc: ";
 		errmsg_ += strerror(errno);
 		goto err;
 	}
 
-	setsize_ = setsize;
-	maxfd_ = -1;
-
+	this->setsize_ = setsize;
 	if (zApiCreate() == -1) {
 		goto err;
 	}
 
+	this->events_ = (zFileEvent*)events;
+	this->fired_ = (zFiredEvent*)fired;
 	for (int i = 0; i < setsize; ++i) {
 		events_[i].mask = Z_NONE;
 	}
@@ -42,17 +42,13 @@ int BaseEvent::init(int setsize) {
 	return Z_OK;
 
 err:
-	if (!events_) {
-		free(events_);
-	}
-	if (!fired_) {
-		free(fired_);
-	}
+	free(events);
+	free(fired);
 
 	return Z_ERR;
 }
 
-int BaseEvent::resizeSetsize(int setsize) {
+int BaseEvent::ResizeSetsize(int setsize) {
 	if (setsize == this->setsize_) {
 		return Z_OK;
 	}
@@ -64,17 +60,21 @@ int BaseEvent::resizeSetsize(int setsize) {
 		return Z_ERR;
 	}
 	void* newevents = realloc(events_, sizeof(zFileEvent) * setsize);
-	void* newfired = realloc(fired_, sizeof(zFiredEvent) * setsize);
-	if (!newevents || !newfired) {
+	if (!newevents) {
 		errmsg_ = "realloc: ";
 		errmsg_ += strerror(errno);
 		return Z_ERR;
 	}
-
 	events_ = (zFileEvent*)newevents;
+	void* newfired = realloc(fired_, sizeof(zFiredEvent) * setsize);
+	if (!newfired) {
+		errmsg_ = "realloc: ";
+		errmsg_ += strerror(errno);
+		return Z_ERR;
+	}
 	fired_ = (zFiredEvent*)newfired;
-	this->setsize_ = setsize;
 
+	this->setsize_ = setsize;
 	for (int i = maxfd_ + 1; i < setsize; ++i) {
 		events_[i].mask = Z_NONE;
 	}
@@ -85,7 +85,8 @@ int BaseEvent::resizeSetsize(int setsize) {
 int BaseEvent::CreateFileEvent(int fd, int mask, zFileProc proc,
 							   void* clientData) {
 	if (fd >= setsize_) {
-		errmsg_ = strerror(ERANGE);
+		errmsg_ = "CreateFileEvent: ";
+		errmsg_ += strerror(ERANGE);
 		return Z_ERR;
 	}
 	zFileEvent* fe = &events_[fd];
@@ -93,8 +94,11 @@ int BaseEvent::CreateFileEvent(int fd, int mask, zFileProc proc,
 		return Z_ERR;
 	}
 	fe->mask |= mask;
-	if ((mask & Z_READABLE) || (mask & Z_WRITEABLE)) {
-		fe->fileProc = proc;
+	if (mask & Z_READABLE) {
+		fe->rfileProc = proc;
+	}
+	if (mask & Z_WRITEABLE) {
+		fe->wfileProc = proc;
 	}
 
 	fe->clientData = clientData;
@@ -139,7 +143,7 @@ int BaseEvent::GetFileEvents(int fd) {
 	return fe->mask;
 }
 
-// 返回处理是事件数目
+// 返回处理的事件数目
 int BaseEvent::ProcessEvents(int flags) {
 	// Nothing to do? return ASAP
 	if (!(flags & Z_TIME_EVENTS) && !(flags & Z_FILE_EVENTS)) {
@@ -147,19 +151,25 @@ int BaseEvent::ProcessEvents(int flags) {
 	}
 	int processed = 0;
 	if (maxfd_ != -1 || ((flags & Z_TIME_EVENTS) && !(flags & Z_DONT_WAIT))) {
-		struct timeval* tvp;
-		tvp = NULL;
+		struct timeval* tvp = NULL;
 
 		int numevents = zApiPoll(tvp);
 		for (int j = 0; j < numevents; ++j) {
 			zFileEvent* fe = &events_[fired_[j].fd];
 			int mask = fired_[j].mask;
 			int fd = fired_[j].fd;
+			bool rfired = false;
 			// note the fe->mask & mask & ... code: maybe an already processed
 			// event removed an element that fired and we still didn't
 			// processed, so we check if the event is still valid.
-			if (fe->mask & mask & (Z_READABLE | Z_WRITEABLE)) {
-				fe->fileProc(fd, fe->clientData, mask);
+			if (fe->mask & mask & Z_READABLE) {
+				rfired = true;
+				fe->rfileProc(fd, fe->clientData, mask);
+			}
+			if ((fe->mask & mask & Z_WRITEABLE)) {
+				if (!rfired || fe->rfileProc != fe->wfileProc) {
+					fe->wfileProc(fd, fe->clientData, mask);
+				}
 			}
 			++processed;
 		}

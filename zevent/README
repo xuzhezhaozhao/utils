@@ -1,5 +1,4 @@
-# pevent
-基于 epoll 的事件驱动库
-
+# zevent
+redis 事件驱动库 ae C++ 版本 
 
 开发中...
