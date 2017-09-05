@@ -101,6 +101,10 @@ struct is_jsontype<const char*> {
 	enum { value = 1 };
 };
 template <>
+struct is_jsontype<std::string> {
+	enum { value = 1 };
+};
+template <>
 struct is_jsontype<Json::Value> {
 	enum { value = 1 };
 };

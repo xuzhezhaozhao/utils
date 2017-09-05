@@ -55,6 +55,7 @@ TEST(JSONCPP_HELPER, check_basic) {
 	value["feed"]["title"] = "let's go";
 	ASSERT_TRUE(checkJsonArgs(value, "feed", object_tag));
 	ASSERT_TRUE(!checkJsonArgs(value, "feed", array_tag));
+
 }
 
 TEST(JSONCPP_HELPER, check_advanced) {
@@ -102,6 +103,9 @@ TEST(JSONCPP_HELPER, setvalue_basic) {
 	setJsonValue(value, "school", subvalue);
 	ASSERT_TRUE(checkJsonArgs(value, "school", object_tag));
 	ASSERT_TRUE(value["school"] == subvalue);
+
+	std::string wuin = "xzz";
+	setJsonValue(value, "wuin", wuin);
 }
 
 TEST(JSONCPP_HELPER, setvalue_advanced) {
