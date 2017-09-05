@@ -28,18 +28,19 @@ struct string_tag_t {};
 struct array_tag_t {};
 struct object_tag_t {};
 
-const struct null_tag_t null_tag;
-const struct bool_tag_t bool_tag;
-const struct int32_tag_t int32_tag;
-const struct int64_tag_t int64_tag;
-const struct uint32_tag_t uint32_tag;
-const struct uint64_tag_t uint64_tag;
-const struct integral_tag_t integral_tag;
-const struct double_tag_t double_tag;
-const struct numeric_tag_t numeric_tag;
-const struct string_tag_t string_tag;
-const struct array_tag_t array_tag;
-const struct object_tag_t object_tag;
+// initialize to suppress compile error for gcc 4.4
+static const struct null_tag_t null_tag = {};
+static const struct bool_tag_t bool_tag = {};
+static const struct int32_tag_t int32_tag = {};
+static const struct int64_tag_t int64_tag = {};
+static const struct uint32_tag_t uint32_tag = {};
+static const struct uint64_tag_t uint64_tag = {};
+static const struct integral_tag_t integral_tag = {};
+static const struct double_tag_t double_tag = {};
+static const struct numeric_tag_t numeric_tag = {};
+static const struct string_tag_t string_tag = {};
+static const struct array_tag_t array_tag = {};
+static const struct object_tag_t object_tag = {};
 
 // base
 bool __checkJsonArgs(const Json::Value&) { return true; }
