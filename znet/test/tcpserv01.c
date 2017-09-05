@@ -10,19 +10,18 @@
 
 #include <bits/socket.h>
 #include <netinet/in.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include <stdio.h>
-
 
 static void str_echo(int sockfd) {
 	char buf[MAXLINE];
 	ssize_t n = 0;
 
 again:
-	while ( (n = read(sockfd, buf, MAXLINE)) > 0 ) {
+	while ((n = read(sockfd, buf, MAXLINE)) > 0) {
 		if (zwriten(sockfd, buf, n) < 0) {
 			perror("write");
 			exit(-1);
@@ -62,7 +61,7 @@ int main() {
 	for (;;) {
 		struct sockaddr_in cliaddr;
 		socklen_t clilen = sizeof(cliaddr);
-		int	connfd = accept(listenfd, (struct sockaddr *)&cliaddr, &clilen);
+		int connfd = accept(listenfd, (struct sockaddr *)&cliaddr, &clilen);
 		if (connfd < 0) {
 			perror("accept");
 			exit(-1);
