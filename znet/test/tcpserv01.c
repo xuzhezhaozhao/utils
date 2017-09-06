@@ -7,6 +7,7 @@
 
 #include "../znet.h"
 #include "def.h"
+#include "unpv1/unp.h"
 
 #include <bits/socket.h>
 #include <netinet/in.h>
@@ -15,6 +16,14 @@
 #include <string.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <sys/wait.h>
+
+void sig_chld(int signo) {
+	pid_t pid;
+	int stat;
+	pid = wait(&stat);
+	printf("child %d terminated.\n", pid);
+}
 
 static void str_echo(int sockfd) {
 	char buf[MAXLINE];
@@ -55,6 +64,11 @@ int main() {
 
 	if (listen(listenfd, MAX_BACKLOG) < 0) {
 		perror("listen");
+		exit(-1);
+	}
+
+	if (unp_signal(SIGCHLD, sig_chld) == SIG_ERR) {
+		perror("unp_signal");
 		exit(-1);
 	}
 

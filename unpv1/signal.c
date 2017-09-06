@@ -22,6 +22,8 @@ Sigfunc* unp_signal(int signo, Sigfunc* func) {
 #endif
 	} else {
 #ifdef SA_RESTART
+		// 假如进程阻塞在 accept 调用上，此次来了一个信号，进程中断去处理信号，
+		// 若 SA_RESTART 不设置，中断处理函数结束后 accept 会返回 EINTR 错误
 		act.sa_flags |= SA_RESTART; /* SVR4, 44BSD */
 #endif
 	}
