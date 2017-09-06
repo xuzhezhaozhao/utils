@@ -9,4 +9,4 @@ set(CMAKE_CXX_FLAGS "-g -Wall -Werror")
 include_directories(../deps/googletest/googletest/include)
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../deps/googletest/build/googlemock/gtest/)
 
-add_library(unp sock_ntop.c)
+add_library(unp signal.c)

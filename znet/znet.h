@@ -5,6 +5,9 @@
  @Description:
  ******************************************************/
 
+#ifndef UTILS_ZNET_H_
+#define UTILS_ZNET_H_
+
 #include <arpa/inet.h>
 #include <stdio.h>
 #include <string.h>
@@ -26,3 +29,5 @@ extern int sockfd_to_family(int sockfd);
 #ifdef __cplusplus
 }
 #endif
+
+#endif /* ifndef UTILS_ZNET_H_ */
