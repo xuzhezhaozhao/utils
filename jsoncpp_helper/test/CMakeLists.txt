@@ -6,12 +6,12 @@ if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
 endif()
 
 # gtest
-include_directories(../../deps/googletest/googletest/include)
+include_directories(SYSTEM ../../deps/googletest/googletest/include)
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../deps/googletest/build/googlemock/gtest/)
 
 # jsoncpp
 set(JSONCPP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../deps/jsoncpp/)
-include_directories(${JSONCPP_DIR}/dist)
+include_directories(SYSTEM ${JSONCPP_DIR}/dist)
 
 add_executable(jsoncpp_helper_test jsoncpp_helper_test.cpp ${JSONCPP_DIR}/dist/jsoncpp.cpp)
 target_link_libraries(jsoncpp_helper_test gtest gtest_main pthread)

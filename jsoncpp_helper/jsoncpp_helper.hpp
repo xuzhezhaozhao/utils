@@ -3,20 +3,100 @@
  @Created Time : 2017年08月31日 星期四 22时03分51秒
  @File Name: jsoncpp_helper.hpp
  @Description:
-
-APIs:
-命名空间 utils::jsoncpp_helper;
-
-1.
-template <typename... Args>
-bool checkJsonArgs(const Json::Value& value, Args... args);
-
  ******************************************************/
+
+/**
+ * APIs:
+ * 命名空间 utils::jsoncpp_helper;
+ * 
+ * 1. 校验 json 字段
+ * template <typename... Args>
+ * bool checkJsonArgs(const Json::Value& value, Args... args);
+ *
+ * 参数类型为变长模板参数, 第一个参数是 Json::Value 类型, 为待校验的json数据;
+ * 之后的参数为多个 (key, type) 对的形式. 例如：
+ *
+ *  using namespace utils::jsoncpp_helper;
+ * 	Json::Value value;
+ * 	value["id"] = 158;
+ * 	value["qq"] = 123456;
+ * 	value["wechat"] = "abc_abc";
+ * 	value["null"] = Json::nullValue;
+ * 	value["score"] = 95.5;
+ * 	value["list"][0] = 1;
+ * 	value["list"][1] = 2;
+ * 	value["obj"]["home"] = "zhangshu";
+ *
+ * 	ASSERT_TRUE(checkJsonArgs(
+ * 		value, "id", int32_tag, "qq", uint32_tag, "wechat", string_tag, "null",
+ * 		null_tag, "score", double_tag, "list", array_tag, "obj", object_tag));
+ *
+ * (key, type)参数对中 key 的类型可以是 char* 和 std::string; type 有如下几种
+ * 类型, * 对应 jsoncpp 支持的数据类型:
+ * 	null_tag
+ * 	bool_tag
+ * 	int32_tag
+ * 	int64_tag
+ * 	uint32_tag
+ * 	uint64_tag
+ * 	integral_tag
+ * 	double_tag
+ * 	numeric_tag
+ * 	string_tag
+ * 	array_tag
+ * 	object_tag
+ * 	
+ * 2. 设置 json 字段数据
+ * template <typename... Args>
+ * void setJsonValue(Json::Value& value, Args... args);
+ * 
+ * 参数类型为变长模板参数,第一个参数是 Json::Value 类型, 为待设置的json数据;
+ * 之后的参数为多个 (key, value) 对的形式. 例如：
+ * 
+ *	using namespace utils::jsoncpp_helper;
+ *	Json::Value value;
+ *	setJsonValue(value, "name", "zhezhaoxu", "id", 158, "good", true, "score",
+ *				 95.5);
+ *	ASSERT_TRUE(checkJsonArgs(value, "name", string_tag, "id", int32_tag,
+ *							  "good", bool_tag, "score", double_tag));
+ *	ASSERT_TRUE(value["name"] == "zhezhaoxu");
+ *	ASSERT_TRUE(value["id"] == 158);
+ *	ASSERT_TRUE(value["good"] == true);
+ *	ASSERT_TRUE(value["score"] == 95.5);
+ * 
+ * 3. 设置 json 数组数据
+ * template <typename... Args>
+ * void setJsonArrayValue(Json::Value& arrayValue, Args... args);
+ * 
+ * 参数类型为变长模板参数, 第一个参数是 Json::Value 类型, 为待设置的json数据;
+ * 之后的参数有两种格式：
+ * (1) 多个 value 的形式. 例如:
+ * using namespace utils::jsoncpp_helper;
+ * 	Json::Value value;
+ * 	setJsonArrayValue(value["array"], 158, 19930326, "zhezhao", true, 95.5);
+ * 	ASSERT_TRUE(checkJsonArgs(value, "array", array_tag));
+ * 	ASSERT_TRUE(checkJsonArgs(value["array"][0] == 158));
+ * 	ASSERT_TRUE(checkJsonArgs(value["array"][1] == 19930326));
+ * 	ASSERT_TRUE(checkJsonArgs(value["array"][2] == "zhezhao"));
+ * 	ASSERT_TRUE(checkJsonArgs(value["array"][3] == true));
+ * 	ASSERT_TRUE(checkJsonArgs(value["array"][4] == 95.5));
+ * 	
+ * 	(2) (intput, N) 的形式
+ * 	input 为输入数组, N为数组大小; 例如:
+ *	std::vector<int> tickets = {1, 2, 3};
+ *	setJsonArrayValue(value["tickets"], tickets, 3);
+ *	ASSERT_TRUE(checkJsonArgs(value, "tickets", array_tag));
+ *	EXPECT_TRUE(value["tickets"][0] == 1);
+ *	EXPECT_TRUE(value["tickets"][1] == 2);
+ *	EXPECT_TRUE(value["tickets"][2] == 3);
+ * 
+ */
+
 
 #ifndef UTILS_JSONCPP_HELPER_H_
 #define UTILS_JSONCPP_HELPER_H_
 
-#include "json/json.h"
+#include <json/json.h>
 
 namespace utils {
 namespace jsoncpp_helper {
@@ -157,20 +237,20 @@ bool checkJsonArgs(const Json::Value& value, Args... args) {
 	return __checkJsonArgs(value, args...);
 }
 
-// 设置 value 中的字段，使用方法如下：
+// 设置 value 中的字段,使用方法如下：
 // setJsonValue(value, key1, val1, key2, val2, key3, val3, ...);
-// key* 为字符串类型， val* 为 jsoncpp 支持的任意类型
+// key* 为字符串类型, val* 为 jsoncpp 支持的任意类型
 template <typename... Args>
 void setJsonValue(Json::Value& value, Args... args) {
 	__setJsonValue(value, args...);
 }
 
-// 设置数组类型的值，使用方法如下：
+// 设置数组类型的值,使用方法如下：
 // 有两种形式：
 // 1. setJsonArrayValue(arrayValue, val1, val2, val3, ...);
 //  val* 为 jsoncpp 支持的任意类型
 // 2. setJsonArrayValue(arrayValue, input, N);
-//  input 类型只要重载了 [] 操作符就行，N 为数组大小
+//  input 类型只要重载了 [] 操作符就行,N 为数组大小
 template <typename... Args>
 void setJsonArrayValue(Json::Value& arrayValue, Args... args) {
 	__setJsonArrayValue(arrayValue, args...);

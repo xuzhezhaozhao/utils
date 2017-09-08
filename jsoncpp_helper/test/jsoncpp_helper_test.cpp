@@ -6,8 +6,8 @@
  ******************************************************/
 
 #include "../jsoncpp_helper.hpp"
-#include "gtest/gtest.h"
-#include "json/json.h"
+#include <gtest/gtest.h>
+#include <json/json.h>
 
 TEST(JSONCPP_HELPER, check_basic) {
 	using namespace utils::jsoncpp_helper;
