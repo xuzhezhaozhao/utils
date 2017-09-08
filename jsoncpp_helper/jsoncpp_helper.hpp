@@ -68,6 +68,8 @@ DEFINE_checkJsonArgs(string_tag_t, isString);
 DEFINE_checkJsonArgs(array_tag_t, isArray);
 DEFINE_checkJsonArgs(object_tag_t, isObject);
 
+#undef DEFINE_checkJsonArgs
+
 template <typename T>
 struct is_jsontype {
 	enum { value = 0 };
@@ -170,6 +172,8 @@ void setJsonArrayValue(Json::Value& arrayValue, Args... args) {
 }
 
 /******** end API ***********************/
+
+
 }
 }
 

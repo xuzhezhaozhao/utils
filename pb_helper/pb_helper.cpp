@@ -41,7 +41,10 @@ DEFINE_TypeFieldToString(Bool, valueToString);
 DEFINE_TypeFieldToString(EnumValue, valueToString);
 DEFINE_TypeFieldToString(String, valueToQuotedString);
 DEFINE_TypeFieldToString(Message, __protobufToJsonString);
+
+#undef DEFINE_TypeFieldToString
 }
+
 
 namespace {
 /** Repeated field to string macro **/
