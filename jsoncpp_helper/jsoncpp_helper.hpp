@@ -257,7 +257,8 @@ void setJsonArrayValue(Json::Value& arrayValue, Args... args) {
 }
 
 /******** end API ***********************/
-}
-}
+
+} // namespace jsoncpp_helper
+} // namespace utils
 
 #endif
