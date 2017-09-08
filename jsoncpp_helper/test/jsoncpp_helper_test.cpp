@@ -55,7 +55,6 @@ TEST(JSONCPP_HELPER, check_basic) {
 	value["feed"]["title"] = "let's go";
 	ASSERT_TRUE(checkJsonArgs(value, "feed", object_tag));
 	ASSERT_TRUE(!checkJsonArgs(value, "feed", array_tag));
-
 }
 
 TEST(JSONCPP_HELPER, check_advanced) {
@@ -75,6 +74,15 @@ TEST(JSONCPP_HELPER, check_advanced) {
 		null_tag, "score", double_tag, "list", array_tag, "obj", object_tag));
 
 	ASSERT_TRUE(!checkJsonArgs(value, "addr", string_tag));
+}
+
+TEST(JSONCPP_HELPER, check_stringkey) {
+	using namespace utils::jsoncpp_helper;
+	Json::Value value;
+	std::string id_lit = "id";
+	ASSERT_TRUE(!checkJsonArgs(value, id_lit, int32_tag));
+	value["id"] = 158;
+	ASSERT_TRUE(checkJsonArgs(value, id_lit, int32_tag));
 }
 
 TEST(JSONCPP_HELPER, setvalue_basic) {

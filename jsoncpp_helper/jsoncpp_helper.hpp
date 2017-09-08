@@ -1,10 +1,16 @@
 /*******************************************************
  @Author: zhezhaoxu
  @Created Time : 2017年08月31日 星期四 22时03分51秒
- @File Name: jsoncpp_helper.h
+ @File Name: jsoncpp_helper.hpp
  @Description:
- 提供如下功能
- 1. 方便检查 jsoncpp Json::Value 对象的字段类型
+
+APIs:
+命名空间 utils::jsoncpp_helper;
+
+1.
+template <typename... Args>
+bool checkJsonArgs(const Json::Value& value, Args... args);
+
  ******************************************************/
 
 #ifndef UTILS_JSONCPP_HELPER_H_
@@ -45,14 +51,14 @@ static const struct object_tag_t object_tag = {};
 // base
 bool __checkJsonArgs(const Json::Value&) { return true; }
 
-#define DEFINE_checkJsonArgs(type1, type2)                                 \
-	template <typename... Args>                                               \
-	bool __checkJsonArgs(const Json::Value& value, const char* key, type1, \
-							Args... args) {                                   \
-		if (!(value.isMember(key) && value[key].type2())) {                   \
-			return false;                                                     \
-		}                                                                     \
-		return __checkJsonArgs(value, args...);                            \
+#define DEFINE_checkJsonArgs(type1, type2)                              \
+	template <typename T, typename... Args>                             \
+	bool __checkJsonArgs(const Json::Value& value, const T& key, type1, \
+						 Args... args) {                                \
+		if (!(value.isMember(key) && value[key].type2())) {             \
+			return false;                                               \
+		}                                                               \
+		return __checkJsonArgs(value, args...);                         \
 	}
 
 DEFINE_checkJsonArgs(null_tag_t, isNull);
@@ -118,7 +124,7 @@ template <typename T, typename... Args,
 		  typename = typename std::enable_if<is_jsontype<
 			  typename std::remove_reference<T>::type>::value>::type>
 void __setJsonValue(Json::Value& value, const char* key, T&& val,
-					   Args... args) {
+					Args... args) {
 	value[key] = std::forward<T>(val);
 	__setJsonValue(value, args...);
 }
@@ -130,7 +136,7 @@ template <typename T, typename... Args,
 		  typename = typename std::enable_if<is_jsontype<
 			  typename std::remove_reference<T>::type>::value>::type>
 void __setJsonArrayValue(Json::Value& arrayValue, T&& val, Args... args) {
-	arrayValue[ arrayValue.size() ] = std::forward<T>(val);
+	arrayValue[arrayValue.size()] = std::forward<T>(val);
 	__setJsonArrayValue(arrayValue, args...);
 }
 
@@ -159,7 +165,6 @@ void setJsonValue(Json::Value& value, Args... args) {
 	__setJsonValue(value, args...);
 }
 
-
 // 设置数组类型的值，使用方法如下：
 // 有两种形式：
 // 1. setJsonArrayValue(arrayValue, val1, val2, val3, ...);
@@ -172,8 +177,6 @@ void setJsonArrayValue(Json::Value& arrayValue, Args... args) {
 }
 
 /******** end API ***********************/
-
-
 }
 }
 
