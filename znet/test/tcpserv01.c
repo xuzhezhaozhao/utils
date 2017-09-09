@@ -18,20 +18,25 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
+// 处理子进程结束信号 (SIGCHLD)
 void sig_chld(int signo) {
+	UNUSED(signo);
 	pid_t pid;
 	int stat;
-	pid = wait(&stat);
-	printf("child %d terminated.\n", pid);
+	// 不能用 wait, 因为 Unix 信号不排队
+	while ((pid = waitpid(-1, &stat, WNOHANG)) > 0) {
+		printf("child %d terminated.\n", pid);
+	}
 }
 
 static void str_echo(int sockfd) {
-	char buf[MAXLINE];
+	char buf[MAXLINE] = "[srv]";
 	ssize_t n = 0;
 
 again:
-	while ((n = read(sockfd, buf, MAXLINE)) > 0) {
-		if (zwriten(sockfd, buf, n) < 0) {
+	printf("sockfd=%d, %s\n", sockfd, buf);
+	while ((n = read(sockfd, buf + 5, MAXLINE)) > 0) {
+		if (zwriten(sockfd, buf, n + 5) < 0) {
 			perror("write");
 			exit(-1);
 		}

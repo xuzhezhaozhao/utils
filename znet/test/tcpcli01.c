@@ -41,31 +41,35 @@ int main(int argc, char **argv) {
 		fprintf(stderr, "usage: tcpcli <IPaddress>\n");
 		exit(-1);
 	}
+	int sockfd[5];
+	for (int i = 0; i < 5; ++i) {
+		sockfd[i] = socket(AF_INET, SOCK_STREAM, 0);
+		if (sockfd[i] < 0) {
+			perror("socket");
+			exit(-1);
+		}
 
-	int sockfd = socket(AF_INET, SOCK_STREAM, 0);
-	if (sockfd < 0) {
-		perror("socket");
-		exit(-1);
+		memset(&servaddr, 0, sizeof(servaddr));
+		servaddr.sin_family = AF_INET;
+		servaddr.sin_port = htons(LISTEN_PORT);
+		int ret = inet_pton(AF_INET, argv[1], &servaddr.sin_addr);
+		if (ret == 0) {
+			fprintf(stderr, "inet_pton: not a valid network address.\n");
+			exit(-1);
+		} else if (ret == -1) {
+			perror("inet_pton");
+			exit(-1);
+		}
+
+		if (connect(sockfd[i], (struct sockaddr *)&servaddr, sizeof(servaddr)) <
+			0) {
+			perror("connect");
+			exit(-1);
+		}
 	}
 
-	memset(&servaddr, 0, sizeof(servaddr));
-	servaddr.sin_family = AF_INET;
-	servaddr.sin_port = htons(LISTEN_PORT);
-	int ret = inet_pton(AF_INET, argv[1], &servaddr.sin_addr);
-	if (ret == 0) {
-		fprintf(stderr, "inet_pton: not a valid network address.\n");
-		exit(-1);
-	} else if (ret == -1) {
-		perror("inet_pton");
-		exit(-1);
-	}
 
-	if (connect(sockfd, (struct sockaddr *)&servaddr, sizeof(servaddr)) < 0) {
-		perror("connect");
-		exit(-1);
-	}
-
-	str_cli(stdin, sockfd);
+	str_cli(stdin, sockfd[0]);
 
 	return 0;
 }
