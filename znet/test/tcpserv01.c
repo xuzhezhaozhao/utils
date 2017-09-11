@@ -30,13 +30,12 @@ void sig_chld(int signo) {
 }
 
 static void str_echo(int sockfd) {
-	char buf[MAXLINE] = "[srv]";
+	char buf[MAXLINE] = "[srv] ";
 	ssize_t n = 0;
 
 again:
-	printf("sockfd=%d, %s\n", sockfd, buf);
-	while ((n = read(sockfd, buf + 5, MAXLINE)) > 0) {
-		if (zwriten(sockfd, buf, n + 5) < 0) {
+	while ((n = read(sockfd, buf + 6, MAXLINE)) > 0) {
+		if (zwriten(sockfd, buf, n + 6) < 0) {
 			perror("write");
 			exit(-1);
 		}
