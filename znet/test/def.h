@@ -13,5 +13,7 @@
 #define MAX_BACKLOG 1024 
 
 #define UNUSED(x) ((void)x)
+#define	min(a,b)	((a) < (b) ? (a) : (b))
+#define	max(a,b)	((a) > (b) ? (a) : (b))
 
 #endif /* ifndef  */
