@@ -98,7 +98,10 @@ int main() {
 				ssize_t n = read(sockfd, buf, MAXLINE);
 				if (n < 0) {
 					if (errno == ECONNRESET) {
-						/* connection reset by client */
+						// 这种情况的产生是客户端发送了一个 RST 来终止连接
+						// 这样的服务器程序还是不够健壮, 还有可能因为超时
+						// 产生 ETIMEOUT 错误, 不应该终止服务进程
+						// connection reset by client
 						close(sockfd);
 						client[i].fd = -1;
 					} else {
