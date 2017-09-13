@@ -5,6 +5,8 @@
  @Description:
  ******************************************************/
 
+#include <netinet/ip.h>
+#include <netinet/ip6.h>
 #include <netinet/tcp.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,6 +30,7 @@ struct sock_opts {
 	int opt_name;
 	char *(*opt_val_str)(union val *, int);
 } sock_opts[] = {
+	{"SO_ACCEPTCONN", SOL_SOCKET, SO_ACCEPTCONN, sock_str_flag},
 	{"SO_BROADCAST", SOL_SOCKET, SO_BROADCAST, sock_str_flag},
 	{"SO_DEBUG", SOL_SOCKET, SO_DEBUG, sock_str_flag},
 	{"SO_DONTROUTE", SOL_SOCKET, SO_DONTROUTE, sock_str_flag},
@@ -48,7 +51,7 @@ struct sock_opts {
 	{"SO_REUSEPORT", 0, 0, NULL},
 #endif
 	{"SO_TYPE", SOL_SOCKET, SO_TYPE, sock_str_int},
-	{"SO_USELOOPBACK", SOL_SOCKET, SO_USELOOPBACK, sock_str_flag},
+	/*{"SO_USELOOPBACK", SOL_SOCKET, SO_USELOOPBACK, sock_str_flag},*/
 	{"IP_TOS", IPPROTO_IP, IP_TOS, sock_str_int},
 	{"IP_TTL", IPPROTO_IP, IP_TTL, sock_str_int},
 #ifdef IPV6_DONTFRAG
@@ -93,7 +96,7 @@ struct sock_opts {
 /* end checkopts1 */
 
 /* include checkopts2 */
-int main(int argc, char **argv) {
+int main() {
 	int fd;
 	socklen_t len;
 	struct sock_opts *ptr;
@@ -107,26 +110,29 @@ int main(int argc, char **argv) {
 				case SOL_SOCKET:
 				case IPPROTO_IP:
 				case IPPROTO_TCP:
-					fd = Socket(AF_INET, SOCK_STREAM, 0);
+					fd = socket(AF_INET, SOCK_STREAM, 0);
+					// TODO
 					break;
-#ifdef IPV6
 				case IPPROTO_IPV6:
-					fd = Socket(AF_INET6, SOCK_STREAM, 0);
+					fd = socket(AF_INET6, SOCK_STREAM, 0);
+					// TODO
 					break;
-#endif
-#ifdef IPPROTO_SCTP
 				case IPPROTO_SCTP:
-					fd = Socket(AF_INET, SOCK_SEQPACKET, IPPROTO_SCTP);
+					fd = socket(AF_INET, SOCK_SEQPACKET, IPPROTO_SCTP);
+					// TODO
 					break;
-#endif
 				default:
-					err_quit("Can't create fd for level %d\n", ptr->opt_level);
+					fprintf(stderr,
+							"Can't create fd for level %d, opt_name %s\n",
+							ptr->opt_level, ptr->opt_str);
+					exit(-1);
 			}
 
 			len = sizeof(val);
 			if (getsockopt(fd, ptr->opt_level, ptr->opt_name, &val, &len) ==
 				-1) {
-				err_ret("getsockopt error");
+				fprintf(stderr, "getsockopt error");
+				exit(-1);
 			} else {
 				printf("default = %s\n", (*ptr->opt_val_str)(&val, len));
 			}
@@ -179,7 +185,7 @@ static char *sock_str_timeval(union val *ptr, int len) {
 		snprintf(strres, sizeof(strres), "size (%d) not sizeof(struct timeval)",
 				 len);
 	else
-		snprintf(strres, sizeof(strres), "%d sec, %d usec", tvptr->tv_sec,
+		snprintf(strres, sizeof(strres), "%ld sec, %ld usec", tvptr->tv_sec,
 				 tvptr->tv_usec);
 	return (strres);
 }

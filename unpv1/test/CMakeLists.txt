@@ -10,6 +10,9 @@ set(CMAKE_C_FLAGS "-g -Wall")
 include_directories(../../deps/googletest/googletest/include)
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../deps/googletest/build/googlemock/gtest/)
 
-# tcpserv01
+# signal_test 
 add_executable(signal_test ../signal.c signal_test.c)
 target_link_libraries(signal_test unp)
+
+# checksockopt.c
+add_executable(checksockopt checksockopt.c)
