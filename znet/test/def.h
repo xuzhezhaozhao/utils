@@ -11,6 +11,7 @@
 #define MAXLINE 1024
 #define LISTEN_PORT 50000
 #define MAX_BACKLOG 1024 
+#define OPEN_MAX 1024 
 
 #define UNUSED(x) ((void)x)
 #define	min(a,b)	((a) < (b) ? (a) : (b))
