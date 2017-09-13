@@ -14,6 +14,7 @@ extern "C" {
 
 typedef void Sigfunc(int); /* for signal handlers */
 
+// 成功返回之前处理函数; 出错返回 SIG_ERR
 extern Sigfunc* unp_signal(int signo, Sigfunc* func);
 
 #ifdef __cplusplus
