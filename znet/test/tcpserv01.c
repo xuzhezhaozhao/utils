@@ -35,7 +35,7 @@ static void str_echo(int sockfd) {
 
 again:
 	while ((n = read(sockfd, buf + 6, MAXLINE)) > 0) {
-		if (zwriten(sockfd, buf, n + 6) < 0) {
+		if (zwriten(sockfd, buf, n + 6) != n + 6) {
 			perror("write");
 			exit(-1);
 		}

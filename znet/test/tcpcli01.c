@@ -8,19 +8,24 @@
 #include "../znet.h"
 #include "def.h"
 
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/select.h>
 
 extern ssize_t readline(int fd, void *vptr, size_t maxlen);  // readline.c
 
+// 利用 select 可以及时检测到服务端异常关闭的情况
+// 正确处理重定向情况的批量输入
 void str_cli(FILE *fp, int sockfd) {
-	char sendline[MAXLINE], recvline[MAXLINE];
+	char buf[MAXLINE];
 	fd_set rset;
 
+	int stdineof = 0;
 	FD_ZERO(&rset);
 	for (;;) {
-		FD_SET(fileno(fp), &rset);
+		if (stdineof == 0) {
+			FD_SET(fileno(fp), &rset);
+		}
 		FD_SET(sockfd, &rset);
 		int maxfdp1 = max(fileno(fp), sockfd) + 1;
 		if (select(maxfdp1, &rset, NULL, NULL, NULL) < 0) {
@@ -28,22 +33,41 @@ void str_cli(FILE *fp, int sockfd) {
 			exit(-1);
 		}
 		if (FD_ISSET(sockfd, &rset)) {
-			ssize_t cnt = readline(sockfd, recvline, MAXLINE);
+			ssize_t cnt = read(sockfd, buf, MAXLINE);
 			if (cnt == 0) {
-				fprintf(stderr, "str_cli: server terminated prematurely\n");
-				exit(-1);
+				if (stdineof == 1) {
+					return;  // normal termination
+				} else {
+					fprintf(stderr, "str_cli: server terminated prematurely\n");
+					exit(-1);
+				}
 			} else if (cnt < 0) {
-				perror("readline");
+				perror("[str cli] read");
 				exit(-1);
 			}
 
-			fputs(recvline, stdout);
-		}
-		if (FD_ISSET(fileno(fp), &rset)) {
-			if (fgets(sendline, MAXLINE, fp) == NULL) {
-				return;
+			if (write(fileno(stdout), buf, cnt) < 0) {
+				perror("[str cli] write");
+				exit(-1);
 			}
-			if (zwriten(sockfd, sendline, strlen(sendline)) < 0) {
+		}
+
+		if (FD_ISSET(fileno(fp), &rset)) {
+			ssize_t cnt = read(fileno(fp), buf, MAXLINE);
+			if (cnt == 0) {
+				stdineof = 1;
+				if (shutdown(sockfd, SHUT_WR) < 0) {
+					perror("shutdown");
+					exit(-1);
+				}
+				FD_CLR(fileno(fp), &rset);
+				continue;
+			} else if (cnt < 0) {
+				perror("read stdin");
+				exit(-1);
+			}
+
+			if (zwriten(sockfd, buf, cnt) < 0) {
 				perror("write");
 				exit(-1);
 			}

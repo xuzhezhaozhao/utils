@@ -23,3 +23,7 @@ target_link_libraries(tcpserv01 znet unp)
 # tcpcli01
 add_executable(tcpcli01 tcpcli01.c readline.c)
 target_link_libraries(tcpcli01 znet)
+
+# tcpservselect01
+add_executable(tcpservselect01 tcpservselect01.c)
+target_link_libraries(tcpservselect01 znet)
