@@ -8,6 +8,7 @@
 #include "znet.h"
 
 // unpv1 p87 (lib/sock_ntop.c)
+// 出错返回 NULL
 const char* zsock_ntop(const struct sockaddr* sa, socklen_t salen) {
 	char portstr[8];
 	static char str[128];
