@@ -16,18 +16,3 @@ target_link_libraries(znet_test znet gtest gtest_main pthread)
 
 # unittest
 add_custom_target(unittest ./znet_test DEPENDS znet_test)
-
-# tcpserv01
-add_executable(tcpserv01 tcpserv01.c)
-target_link_libraries(tcpserv01 znet unp)
-# tcpcli01
-add_executable(tcpcli01 tcpcli01.c readline.c)
-target_link_libraries(tcpcli01 znet)
-
-# tcpservselect01
-add_executable(tcpservselect01 tcpservselect01.c)
-target_link_libraries(tcpservselect01 znet)
-
-# tcpservpoll01
-add_executable(tcpservpoll01 tcpservpoll01.c)
-target_link_libraries(tcpservpoll01 znet)

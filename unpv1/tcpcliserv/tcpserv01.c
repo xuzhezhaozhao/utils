@@ -5,7 +5,7 @@
  @Description:
  ******************************************************/
 
-#include "../znet.h"
+#include "znet/znet.h"
 #include "def.h"
 #include "unpv1/unp.h"
 

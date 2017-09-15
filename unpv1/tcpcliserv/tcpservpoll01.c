@@ -1,23 +1,25 @@
 /*******************************************************
  @Author: zhezhaoxu
- @Created Time : 2017年09月13日 星期三 10时14分57秒
- @File Name: tcpservselect01.c
+ @Created Time : 2017年09月13日 星期三 20时56分19秒
+ @File Name: tcpservpoll01.c
  @Description:
  ******************************************************/
 
-#include "../znet.h"
+#include "znet/znet.h"
 #include "def.h"
 #include "unpv1/unp.h"
 
 #include <bits/socket.h>
+#include <limits.h>
 #include <netinet/in.h>
+#include <poll.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/select.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#include <sys/select.h>
 
 int main() {
 	int listenfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -41,73 +43,77 @@ int main() {
 		exit(-1);
 	}
 
-	int client[FD_SETSIZE];
-	fd_set rset, allset;
-	char buf[MAXLINE];
-	int maxfd = listenfd;
-	int maxi = -1;
-	for (int i = 0; i < FD_SETSIZE; ++i) {
-		client[i] = -1;
+	struct pollfd client[OPEN_MAX];
+	client[0].fd = listenfd;
+	client[0].events = POLLIN;
+	for (int i = 1; i < OPEN_MAX; ++i) {
+		client[i].fd = -1;
 	}
-	FD_ZERO(&allset);
-	FD_SET(listenfd, &allset);
-
+	int maxi = 0;
+	struct sockaddr_in cliaddr;
+	char buf[MAXLINE];
 	for (;;) {
-		struct sockaddr_in cliaddr;
-		socklen_t clilen = sizeof(cliaddr);
-		rset = allset; /* structure assignment */
-		int nready = select(maxfd + 1, &rset, NULL, NULL, NULL);
+		int nready = poll(client, maxi + 1, -1);
 		if (nready < 0) {
-			perror("nready");
+			perror("poll");
 			exit(-1);
 		}
-		if (FD_ISSET(listenfd, &rset)) {
+		if (client[0].revents & POLLIN) {
+			/* new client connection */
+			socklen_t clilen = sizeof(cliaddr);
 			int connfd = accept(listenfd, (struct sockaddr *)&cliaddr, &clilen);
 			if (connfd < 0) {
 				perror("accept");
 				exit(-1);
 			}
+
 			int i;
-			for (i = 0; i < FD_SETSIZE; ++i) {
-				if (client[i] < 0) {
-					client[i] = connfd;
+			for (i = 1; i < OPEN_MAX; ++i) {
+				if (client[i].fd < 0) {
+					client[i].fd = connfd; /* save descriptor */
 					break;
 				}
 			}
-			if (i == FD_SETSIZE) {
+			if (i == OPEN_MAX) {
 				fprintf(stderr, "too many clients");
 				exit(-1);
 			}
-			FD_SET(connfd, &allset); /* add new descriptor to set */
-			if (connfd > maxfd) {
-				maxfd = connfd; /* for select */
-			}
+
+			client[i].events = POLLIN;
 			if (i > maxi) {
-				maxi = i; /* max index in client[] array */
+				maxi = i;
 			}
+
 			if (--nready <= 0) {
-				continue; /* no more readable descriptors */
+				continue;
 			}
 		}
-		for (int i = 0; i <= maxi; ++i) {
-			// check all clients for data
-			int sockfd = client[i];
+
+		for (int i = 1; i <= maxi; i++) {
+			int sockfd = client[i].fd;
 			if (sockfd < 0) {
 				continue;
 			}
-			if (FD_ISSET(sockfd, &rset)) {
+			if (client[i].revents & (POLLIN | POLLERR)) {
 				ssize_t n = read(sockfd, buf, MAXLINE);
 				if (n < 0) {
-					perror("read");
-					exit(-1);
+					if (errno == ECONNRESET) {
+						// 这种情况的产生是客户端发送了一个 RST 来终止连接
+						// 这样的服务器程序还是不够健壮, 还有可能因为超时
+						// 产生 ETIMEOUT 错误, 不应该终止服务进程
+						// connection reset by client
+						close(sockfd);
+						client[i].fd = -1;
+					} else {
+						perror("read");
+						exit(-1);
+					}
 				} else if (n == 0) {
-					// connection closed by client
 					if (close(sockfd) < 0) {
 						perror("close");
 						exit(-1);
 					}
-					FD_CLR(sockfd, &allset);
-					client[i] = -1;
+					client[i].fd = -1;
 				} else {
 					if (zwriten(sockfd, buf, n) != n) {
 						printf("write");
@@ -115,11 +121,10 @@ int main() {
 					}
 				}
 				if (--nready <= 0) {
-					break;  // no more readable descriptors
+					break;
 				}
 			}
 		}
 	}
-
 	return 0;
 }
