@@ -9,6 +9,9 @@ set(CMAKE_CXX_FLAGS "-g -Wall -Werror")
 include_directories(../deps/googletest/googletest/include)
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../deps/googletest/build/googlemock/gtest/)
 
+include_directories(../)
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../znet/build)
+
 add_library(unp signal.c)
 
 add_subdirectory(test)

@@ -5,20 +5,19 @@
  @Description:
  ******************************************************/
 
+#include "def.h"
+
 #include <sys/types.h>
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAXLINE 1024
 
 void dg_echo(int sockfd, struct sockaddr* pcliaddr, socklen_t clilen) {
-	socklen_t len;
 	char mesg[MAXLINE];
-
 	for (;;) {
-		len = clilen;
+		socklen_t len = clilen;
 		ssize_t n = recvfrom(sockfd, mesg, MAXLINE, 0, pcliaddr, &len);
 		if (n < 0) {
 			perror("recvfrom");

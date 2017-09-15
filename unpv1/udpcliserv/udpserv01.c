@@ -5,13 +5,14 @@
  @Description:
  ******************************************************/
 
-#include <sys/types.h>
-#include <sys/socket.h>
+#include "def.h"
+
 #include <netinet/in.h>
-#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <string.h>
+#include <sys/socket.h>
+#include <sys/types.h>
 
 extern void dg_echo(int sockfd, struct sockaddr* pcliaddr, socklen_t clilen);
 
@@ -22,11 +23,17 @@ int main() {
 		exit(-1);
 	}
 
+	int onoff = 1;
+	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &onoff, sizeof(int)) < 0) {
+		perror("setsockopt");
+		exit(-1);
+	}
+
 	struct sockaddr_in servaddr, cliaddr;
 	memset(&servaddr, 0, sizeof(servaddr));
 	servaddr.sin_family = AF_INET;
 	servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
-	servaddr.sin_port = htons(9000);
+	servaddr.sin_port = htons(SERV_PORT);
 
 	if (bind(sockfd, (struct sockaddr*)&servaddr, sizeof(servaddr)) < 0) {
 		perror("bind");

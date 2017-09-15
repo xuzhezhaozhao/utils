@@ -7,10 +7,6 @@ endif()
 include_directories(../../deps/googletest/googletest/include)
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../deps/googletest/build/googlemock/gtest/)
 
-# znet
-include_directories(../../)
-link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../znet/build)
-
 # tcpserv01
 add_executable(tcpserv01 tcpserv01.c)
 target_link_libraries(tcpserv01 znet unp)
