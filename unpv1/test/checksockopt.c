@@ -30,7 +30,6 @@ struct sock_opts {
 	int opt_name;
 	char *(*opt_val_str)(union val *, int);
 } sock_opts[] = {
-	{"SO_ACCEPTCONN", SOL_SOCKET, SO_ACCEPTCONN, sock_str_flag},
 	{"SO_BROADCAST", SOL_SOCKET, SO_BROADCAST, sock_str_flag},
 	{"SO_DEBUG", SOL_SOCKET, SO_DEBUG, sock_str_flag},
 	{"SO_DONTROUTE", SOL_SOCKET, SO_DONTROUTE, sock_str_flag},
@@ -92,10 +91,7 @@ struct sock_opts {
 	{"SCTP_NODELAY", 0, 0, NULL},
 #endif
 	{NULL, 0, 0, NULL}};
-/* *INDENT-ON* */
-/* end checkopts1 */
 
-/* include checkopts2 */
 int main() {
 	int fd;
 	socklen_t len;
@@ -111,15 +107,24 @@ int main() {
 				case IPPROTO_IP:
 				case IPPROTO_TCP:
 					fd = socket(AF_INET, SOCK_STREAM, 0);
-					// TODO
+					if (fd < 0) {
+						perror("socket");
+						exit(-1);
+					}
 					break;
 				case IPPROTO_IPV6:
 					fd = socket(AF_INET6, SOCK_STREAM, 0);
-					// TODO
+					if (fd < 0) {
+						perror("socket");
+						exit(-1);
+					}
 					break;
 				case IPPROTO_SCTP:
 					fd = socket(AF_INET, SOCK_SEQPACKET, IPPROTO_SCTP);
-					// TODO
+					if (fd < 0) {
+						perror("socket");
+						exit(-1);
+					}
 					break;
 				default:
 					fprintf(stderr,
@@ -141,9 +146,7 @@ int main() {
 	}
 	exit(0);
 }
-/* end checkopts2 */
 
-/* include checkopts3 */
 static char strres[128];
 
 static char *sock_str_flag(union val *ptr, int len) {
@@ -156,7 +159,6 @@ static char *sock_str_flag(union val *ptr, int len) {
 	return (strres);
 	/* *INDENT-ON* */
 }
-/* end checkopts3 */
 
 static char *sock_str_int(union val *ptr, int len) {
 	if (len != sizeof(int))
