@@ -5,12 +5,12 @@
  @Description:
  ******************************************************/
 
-#ifndef UDPCLISERV_DEF_ 
+#ifndef UDPCLISERV_DEF_
 #define UDPCLISERV_DEF_
 
-
 #define MAXLINE 1024
-#define SERV_PORT 9999 
+#define SERV_PORT 9999
+#define LISTENQ 1024 /* 2nd argument to listen() */
+#define max(a, b) ((a) > (b) ? (a) : (b))
 
 #endif
-

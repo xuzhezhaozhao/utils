@@ -6,6 +6,7 @@
  ******************************************************/
 
 #include "def.h"
+#include "dg_cli.h"
 
 #include <arpa/inet.h>
 #include <netinet/in.h>
@@ -14,9 +15,6 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <sys/types.h>
-
-extern void dg_cli(FILE* fp, int sockfd, const struct sockaddr* pservaddr,
-			socklen_t servlen);
 
 int main(int argc, char **argv) {
 	struct sockaddr_in servaddr;
@@ -39,7 +37,7 @@ int main(int argc, char **argv) {
 		exit(-1);
 	}
 
-	dg_cli(stdin, sockfd, (struct sockaddr*)&servaddr, sizeof(servaddr));
+	dg_cliconnect(stdin, sockfd, (struct sockaddr*)&servaddr, sizeof(servaddr));
 
 	return 0;
 }

@@ -9,7 +9,7 @@
 #define TEST_DEF_H_
 
 #define MAXLINE 1024
-#define LISTEN_PORT 50000
+#define LISTEN_PORT 9999
 #define MAX_BACKLOG 1024 
 #define OPEN_MAX 1024 
 

@@ -10,9 +10,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/socket.h>
-#include <stdlib.h>
 
 void dg_cli(FILE* fp, int sockfd, const struct sockaddr* pservaddr,
 			socklen_t servlen) {
@@ -44,6 +44,32 @@ void dg_cli(FILE* fp, int sockfd, const struct sockaddr* pservaddr,
 			} else {
 				printf("reply from unknown ignored.\n");
 			}
+		}
+
+		recvline[n] = 0; /* null terminate */
+		fputs(recvline, stdout);
+	}
+}
+
+void dg_cliconnect(FILE* fp, int sockfd, const struct sockaddr* pservaddr,
+				   socklen_t servlen) {
+	char sendline[MAXLINE], recvline[MAXLINE + 1];
+	if (connect(sockfd, (struct sockaddr*)pservaddr, servlen) < 0) {
+		perror("connect");
+		exit(-1);
+	}
+
+	while (fgets(sendline, MAXLINE, fp) != NULL) {
+		size_t len = strlen(sendline);
+		if (write(sockfd, sendline, len) != (ssize_t)len) {
+			perror("write");
+			exit(-1);
+		}
+
+		ssize_t n = read(sockfd, recvline, MAXLINE);
+		if (n < 0) {
+			perror("read");
+			exit(-1);
 		}
 
 		recvline[n] = 0; /* null terminate */
