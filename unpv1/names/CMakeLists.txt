@@ -10,5 +10,11 @@ include_directories(../deps/googletest/googletest/include)
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../deps/googletest/build/googlemock/gtest/)
 
 add_executable(hostent hostent.c)
-add_executable(daytimetcpcli daytimetcpcli.c tcp_connect.c)
-target_link_libraries(daytimetcpcli znet)
+add_executable(daytimetcpcli daytimetcpcli.c)
+target_link_libraries(daytimetcpcli unp znet)
+
+add_executable(daytimetcpsrv1 daytimetcpsrv1.c)
+target_link_libraries(daytimetcpsrv1 unp znet)
+
+add_executable(daytimetcpsrv2 daytimetcpsrv2.c)
+target_link_libraries(daytimetcpsrv2 unp znet)

@@ -12,10 +12,20 @@
 extern "C" {
 #endif
 
+#include <sys/socket.h>
+
 typedef void Sigfunc(int); /* for signal handlers */
 
-// 成功返回之前处理函数; 出错返回 SIG_ERR
-extern Sigfunc* unp_signal(int signo, Sigfunc* func);
+/* 成功返回之前处理函数; 出错返回 SIG_ERR */
+extern Sigfunc *unp_signal(int signo, Sigfunc *func);
+
+int tcp_connect(const char *host, const char *serv);
+int tcp_listen(const char *host, const char *serv, socklen_t *addrlenp);
+
+extern struct addrinfo *host_serv(const char *host, const char *serv,
+								  int family, int socktype);
+extern struct addrinfo *Host_serv(const char *host, const char *serv,
+								  int family, int socktype);
 
 #ifdef __cplusplus
 }

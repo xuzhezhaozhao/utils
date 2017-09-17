@@ -12,7 +12,7 @@ link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../deps/googletest/build/googlemock
 include_directories(../)
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../znet/build)
 
-add_library(unp signal.c)
+add_library(unp signal.c host_serv.c tcp_connect.c tcp_listen.c)
 
 add_subdirectory(test)
 add_subdirectory(udpcliserv)

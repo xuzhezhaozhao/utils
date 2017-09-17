@@ -13,8 +13,12 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
-// host: 主机名
-// serv: 服务名
+/**
+ * host: 主机名
+ * serv: 服务名
+ * 成功返回连接socket，出错返回 -1
+ * TODO 如何返回出错描述信息, 添加 errmsg 参数？
+ */
 int tcp_connect(const char *host, const char *serv) {
 	struct addrinfo hints, *res, *ressave;
 
@@ -24,9 +28,9 @@ int tcp_connect(const char *host, const char *serv) {
 
 	int n = 0;
 	if ((n = getaddrinfo(host, serv, &hints, &res)) != 0) {
-		fprintf(stderr, "tcp_connect error for %s, %s: %s\n", host, serv,
-				gai_strerror(n));
-		exit(-1);
+		/*fprintf(stderr, "tcp_connect error for %s, %s: %s\n", host, serv,*/
+		/*gai_strerror(n));*/
+		return -1;
 	}
 	ressave = res;
 
@@ -36,18 +40,17 @@ int tcp_connect(const char *host, const char *serv) {
 		if (sockfd < 0) {
 			continue; /* ignore this one */
 		}
-		if (connect(sockfd, res->ai_addr, res->ai_addrlen) == 0) {
+		int ret = connect(sockfd, res->ai_addr, res->ai_addrlen);
+		if (ret == 0) {
 			break; /* success */
 		}
-
-		close(sockfd); /* ignore this one */
+		/* connect 出错，忽略这个地址 */
+		close(sockfd);
 	} while ((res = res->ai_next) != NULL);
 
 	if (res == NULL) {
 		/* errno set from final connect() */
-		fprintf(stderr, "tcp_connect error for %s, %s: %s\n", host, serv,
-				strerror(errno));
-		sockfd = -1;
+		return -1;
 	}
 
 	freeaddrinfo(ressave);

@@ -6,6 +6,7 @@
  ******************************************************/
 
 #include "znet/znet.h"
+#include "../unp.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,8 +16,6 @@
 
 #define MAXLINE 1024
 
-// tcp_connect.c
-extern int tcp_connect(const char *host, const char *serv);
 
 int main(int argc, char **argv) {
 	int sockfd;
