@@ -18,3 +18,7 @@
 	path = deps/jsoncpp
 	url = https://github.com/open-source-parsers/jsoncpp
 	ignore = dirty
+[submodule "deps/libzmq"]
+	path = deps/libzmq
+	url = https://github.com/zeromq/libzmq
+	ignore = dirty
