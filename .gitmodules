@@ -22,3 +22,6 @@
 	path = deps/libzmq
 	url = https://github.com/zeromq/libzmq
 	ignore = dirty
+[submodule "deps/cppzmq"]
+	path = deps/cppzmq
+	url = https://github.com/zeromq/cppzmq
