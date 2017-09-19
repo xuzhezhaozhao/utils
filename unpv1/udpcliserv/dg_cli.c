@@ -39,7 +39,7 @@ void dg_cli(FILE* fp, int sockfd, const struct sockaddr* pservaddr,
 		}
 		if (len != servlen || memcmp(pservaddr, preply_addr, len) != 0) {
 			const char* addr = zsock_ntop(preply_addr, len);
-			if (!addr) {
+			if (addr) {
 				printf("reply from %s ignored.\n", addr);
 			} else {
 				printf("reply from unknown ignored.\n");

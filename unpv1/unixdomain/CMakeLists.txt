@@ -16,3 +16,10 @@ target_link_libraries(unixstrserv01 znet unp)
 
 add_executable(unixstrcli01 unixstrcli01.c)
 target_link_libraries(unixstrcli01 znet)
+
+
+add_executable(unixdgserv01 unixdgserv01.c)
+target_link_libraries(unixdgserv01 znet unp)
+
+add_executable(unixdgcli01 unixdgcli01.c)
+target_link_libraries(unixdgcli01 znet)
