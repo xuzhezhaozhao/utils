@@ -17,7 +17,4 @@ link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../deps/libzmq/build/lib)
 #cppzmq
 include_directories(SYSTEM ../deps/cppzmq/)
 
-add_executable(hwserver hwserver.cpp)
-target_link_libraries(hwserver zmq)
-add_executable(hwclient hwclient.cpp)
-target_link_libraries(hwclient zmq)
+add_subdirectory(examples)
