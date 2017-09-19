@@ -60,10 +60,9 @@ private:
 	mutex_t(const mutex_t&);
 	const mutex_t& operator=(const mutex_t&);
 };
-}
 
-namespace utils {
-struct scoped_lock_t {
+class scoped_lock_t {
+public:
 	scoped_lock_t(mutex_t& mutex_) : mutex(mutex_) { mutex.lock(); }
 
 	~scoped_lock_t() { mutex.unlock(); }
@@ -76,7 +75,8 @@ private:
 	const scoped_lock_t& operator=(const scoped_lock_t&);
 };
 
-struct scoped_optional_lock_t {
+class scoped_optional_lock_t {
+public:
 	scoped_optional_lock_t(mutex_t* mutex_) : mutex(mutex_) {
 		if (mutex != NULL) mutex->lock();
 	}
