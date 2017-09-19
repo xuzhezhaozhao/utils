@@ -100,14 +100,18 @@ flags = [
 '/usr/include/c++/4.8',
 '-isystem',
 '/usr/include/x86_64-linux-gnu/c++/4.8/',
-'-I',
+'-isystem',
 './deps/googletest/googletest/include/',
-'-I',
+'-isystem',
 './deps/googletest/googlemock/include/',
-'-I',
+'-isystem',
 './deps/protobuf/src',
-'-I',
+'-isystem',
 './deps/jsoncpp/dist/',
+'-isystem',
+'./deps/libzmq/include/',
+'-isystem',
+'./deps/cppzmq/',
 ]
 
 
