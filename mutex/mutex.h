@@ -39,7 +39,9 @@ public:
 
 	inline bool try_lock() {
 		int rc = pthread_mutex_trylock(&mutex);
-		if (rc == EBUSY) return false;
+		if (rc == EBUSY) {
+			return false;
+		}
 
 		posix_assert(rc);
 		return true;
@@ -78,11 +80,15 @@ private:
 class scoped_optional_lock_t {
 public:
 	scoped_optional_lock_t(mutex_t* mutex_) : mutex(mutex_) {
-		if (mutex != NULL) mutex->lock();
+		if (mutex != NULL) {
+			mutex->lock();
+		}
 	}
 
 	~scoped_optional_lock_t() {
-		if (mutex != NULL) mutex->unlock();
+		if (mutex != NULL) {
+			mutex->unlock();
+		}
 	}
 
 private:
