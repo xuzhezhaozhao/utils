@@ -66,7 +66,6 @@ private:
 class scoped_lock_t {
 public:
 	scoped_lock_t(mutex_t& mutex_) : mutex(mutex_) { mutex.lock(); }
-
 	~scoped_lock_t() { mutex.unlock(); }
 
 private:
