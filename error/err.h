@@ -19,6 +19,30 @@
 
 // TODO abort() 之前打印调用栈信息
 
+//  This macro works in exactly the same way as the normal assert. It is used
+//  in its stead because standard assert on Win32 in broken - it prints nothing
+//  when used within the scope of JNI library.
+#define utils_assert(x)                                                     \
+	do {                                                                    \
+		if (unlikely(!(x))) {                                               \
+			fprintf(stderr, "Assertion failed: %s (%s:%d)\n", #x, __FILE__, \
+					__LINE__);                                              \
+			fflush(stderr);                                                 \
+			abort();                                                        \
+		}                                                                   \
+	} while (false)
+
+//  Provides convenient way to check for errno-style errors.
+#define errno_assert(x)                                                  \
+	do {                                                                 \
+		if (unlikely(!(x))) {                                            \
+			const char *errstr = strerror(errno);                        \
+			fprintf(stderr, "%s (%s:%d)\n", errstr, __FILE__, __LINE__); \
+			fflush(stderr);                                              \
+			abort();                                                     \
+		}                                                                \
+	} while (false)
+
 //  Provides convenient way to check for POSIX errors.
 #define posix_assert(x)                                                  \
 	do {                                                                 \
