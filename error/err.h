@@ -19,9 +19,6 @@
 
 // TODO abort() 之前打印调用栈信息
 
-//  This macro works in exactly the same way as the normal assert. It is used
-//  in its stead because standard assert on Win32 in broken - it prints nothing
-//  when used within the scope of JNI library.
 #define utils_assert(x)                                                     \
 	do {                                                                    \
 		if (unlikely(!(x))) {                                               \

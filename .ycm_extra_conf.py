@@ -112,6 +112,9 @@ flags = [
 './deps/libzmq/include/',
 '-isystem',
 './deps/cppzmq/',
+
+'-I',
+'./zmq',
 ]
 
 
