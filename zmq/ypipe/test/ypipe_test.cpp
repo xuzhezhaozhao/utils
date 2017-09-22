@@ -32,5 +32,8 @@ TEST(YPIPE, queue) {
 	ASSERT_TRUE(r == 3);
 
 	ret = ypipe.read(&r);
-	ASSERT_TRUE(!ret);
+	EXPECT_TRUE(!ret);
+
+	ret = ypipe.read(&r);
+	EXPECT_TRUE(!ret);
 }

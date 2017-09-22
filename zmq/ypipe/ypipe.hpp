@@ -45,6 +45,7 @@ public:
 	//  set to true the item is assumed to be continued by items
 	//  subsequently written to the pipe. Incomplete items are never
 	//  flushed down the stream.
+	//  TODO 使用完美转发
 	inline void write(const T &value_, bool incomplete_) {
 		//  Place the value to the queue, add new terminator element.
 		queue.back() = value_;
@@ -56,7 +57,7 @@ public:
 		}
 	}
 
-	// value_ 返回 poped incomplete item
+	//  value_ 返回 poped incomplete item
 	//  Pop an incomplete item from the pipe. Returns true if such
 	//  item exists, false otherwise.
 	inline bool unwrite(T *value_) {
@@ -77,6 +78,7 @@ public:
 			return true;
 		}
 
+		w = f;
 		//  Try to set 'c' to 'f'.
 		if (c.cas(w, f) != w) {
 			//  Compare-and-swap was unseccessful because 'c' is NULL.
@@ -85,13 +87,11 @@ public:
 			//  manner. We'll return false to let the caller know
 			//  that reader is sleeping.
 			c.set(f);
-			w = f;
 			return false;
 		}
 
 		//  Reader is alive. Nothing special to do now. Just move
 		//  the 'first un-flushed item' pointer to 'f'.
-		w = f;
 		return true;
 	}
 
@@ -152,19 +152,24 @@ protected:
 	//  reader thread, while back is used only by writer thread.
 	yqueue_t<T, N> queue;
 
-	// 只有 incomplete item 存在 un-flushed 状态
+	//  调用 write() 之后，调用 flush() 之前的 item 都是 un-flushed item
+	//  flushed item 才能被 read() 读到
+
 	//  Points to the first un-flushed item. This variable is used
 	//  exclusively by writer thread.
 	T *w;
 
+	//  该指针之前的 item 是 prefetched item, check_read() 更新
 	//  Points to the first un-prefetched item. This variable is used
 	//  exclusively by reader thread.
 	T *r;
 
-	// 指向 first incomplete item 或者 &queue->back()
+	//  "flush up to here" poiter
+	//  incomplete item 是不能被 flush 的
 	//  Points to the first item to be flushed in the future.
 	T *f;
 
+	//  flush() 和 check_read() 中会更新这个值, 使用 cas 机制 
 	//  The single point of contention between writer and reader thread.
 	//  Points past the last flushed item. If it is NULL,
 	//  reader is asleep. This pointer should be always accessed using
