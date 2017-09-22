@@ -5,7 +5,7 @@
  @Description:
  ******************************************************/
 
-#include "../pb_helper.h"
+#include "../pb_helper.hpp"
 #include "gtest/gtest.h"
 #include "json/json.h"
 #include "person.pb.h"

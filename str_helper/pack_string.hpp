@@ -11,7 +11,7 @@
 #ifndef UTILS_STRINGS_PACK_STRING_H
 #define UTILS_STRINGS_PACK_STRING_H
 
-#include "str_convert.h"
+#include "str_convert.hpp"
 #include <iostream>
 
 #include <string>

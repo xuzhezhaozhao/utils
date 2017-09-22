@@ -1,7 +1,7 @@
 /*******************************************************
  @Author: zhezhaoxu
  @Created Time : 2017年09月22日 星期五 19时49分38秒
- @File Name: signaler.h
+ @File Name: signaler.hpp
  @Description: from libzmq/src/signaler.hpp
  ******************************************************/
 
@@ -18,7 +18,7 @@ enum { retired_fd = -1 };
 //  one will result in undefined behaviour.
 
 class signaler_t {
-   public:
+public:
 	signaler_t();
 	~signaler_t();
 
@@ -28,7 +28,7 @@ class signaler_t {
 	void recv();
 	int recv_failable();
 
-   private:
+private:
 	//  Creates a pair of file descriptors that will be used
 	//  to pass the signals.
 	static int make_fdpair(int *r_, int *w_);

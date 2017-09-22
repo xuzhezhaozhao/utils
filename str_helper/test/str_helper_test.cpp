@@ -5,7 +5,7 @@
  @Description:
  ******************************************************/
 
-#include "../str_helper.h"
+#include "../str_helper.hpp"
 #include "gtest/gtest.h"
 
 #include <climits>

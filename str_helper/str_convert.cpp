@@ -6,7 +6,7 @@
  @Reference: jsoncpp (https://github.com/open-source-parsers/jsoncpp)
  ******************************************************/
 
-#include "str_convert.h"
+#include "str_convert.hpp"
 
 #include <assert.h>
 #include <string.h>

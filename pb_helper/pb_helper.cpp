@@ -6,8 +6,8 @@
  @Dependency: 依赖 str_helper 模块
  ******************************************************/
 
-#include "str_helper/str_helper.h"
-#include "pb_helper.h"
+#include "str_helper/str_helper.hpp"
+#include "pb_helper.hpp"
 
 #include <google/protobuf/descriptor.h>
 #include <google/protobuf/message.h>
