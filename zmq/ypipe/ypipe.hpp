@@ -56,6 +56,7 @@ public:
 		}
 	}
 
+	// value_ 返回 poped incomplete item
 	//  Pop an incomplete item from the pipe. Returns true if such
 	//  item exists, false otherwise.
 	inline bool unwrite(T *value_) {
@@ -151,6 +152,7 @@ protected:
 	//  reader thread, while back is used only by writer thread.
 	yqueue_t<T, N> queue;
 
+	// 只有 incomplete item 存在 un-flushed 状态
 	//  Points to the first un-flushed item. This variable is used
 	//  exclusively by writer thread.
 	T *w;
@@ -159,6 +161,7 @@ protected:
 	//  exclusively by reader thread.
 	T *r;
 
+	// 指向 first incomplete item 或者 &queue->back()
 	//  Points to the first item to be flushed in the future.
 	T *f;
 
