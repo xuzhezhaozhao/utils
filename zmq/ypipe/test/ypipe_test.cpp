@@ -9,7 +9,7 @@
 
 #include <gtest/gtest.h>
 
-TEST(YPIPE, queue) {
+TEST(YPIPE, sequence) {
 	int r = 0;
 	bool ret = false;
 
@@ -37,3 +37,6 @@ TEST(YPIPE, queue) {
 	ret = ypipe.read(&r);
 	EXPECT_TRUE(!ret);
 }
+
+// TODO reader and writer are seperated thread
+
