@@ -63,14 +63,6 @@ utils::signaler_t::~signaler_t() {
 	}
 	int rc = close_wait_ms(r);
 	errno_assert(rc == 0);
-	if (w != retired_fd) {
-		int rc = close_wait_ms(w);
-		errno_assert(rc == 0);
-	}
-	if (r != retired_fd) {
-		int rc = close_wait_ms(r);
-		errno_assert(rc == 0);
-	}
 }
 
 int utils::signaler_t::get_fd() const { return r; }
