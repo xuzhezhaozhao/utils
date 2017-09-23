@@ -13,11 +13,11 @@
 #include <sys/time.h>
 #include <time.h>
 
-utils::clock_t::clock_t() : last_tsc(rdtsc()), last_time(now_us() / 1000) {}
+utils::uclock_t::uclock_t() : last_tsc(rdtsc()), last_time(now_us() / 1000) {}
 
-utils::clock_t::~clock_t() {}
+utils::uclock_t::~uclock_t() {}
 
-uint64_t utils::clock_t::now_us() {
+uint64_t utils::uclock_t::now_us() {
 	//  Use POSIX clock_gettime function to get precise monotonic time.
 	struct timespec tv;
 	int rc = clock_gettime(CLOCK_MONOTONIC, &tv);
@@ -35,7 +35,7 @@ uint64_t utils::clock_t::now_us() {
 	return (tv.tv_sec * (uint64_t)1000000 + tv.tv_nsec / 1000);
 }
 
-uint64_t utils::clock_t::now_ms() {
+uint64_t utils::uclock_t::now_ms() {
 	uint64_t tsc = rdtsc();
 
 	//  If TSC is not supported, get precise time and chop off the microseconds.
@@ -62,7 +62,7 @@ uint64_t utils::clock_t::now_ms() {
 	return last_time;
 }
 
-uint64_t utils::clock_t::rdtsc() {
+uint64_t utils::uclock_t::rdtsc() {
 	uint32_t low, high;
 	__asm__ volatile("rdtsc" : "=a"(low), "=d"(high));
 	return (uint64_t)high << 32 | low;

@@ -12,10 +12,10 @@
 
 namespace utils {
 
-class clock_t {
+class uclock_t {
 public:
-	clock_t();
-	~clock_t();
+	uclock_t();
+	~uclock_t();
 
 	//  CPU's timestamp counter. Returns 0 if it's not available.
 	static uint64_t rdtsc();
@@ -34,8 +34,8 @@ private:
 	//  Physical time corresponding to the TSC above (in milliseconds).
 	uint64_t last_time;
 
-	clock_t(const clock_t &);
-	const clock_t &operator=(const clock_t &);
+	uclock_t(const uclock_t &);
+	const uclock_t &operator=(const uclock_t &);
 };
 }
 

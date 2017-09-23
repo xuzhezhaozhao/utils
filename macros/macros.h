@@ -9,6 +9,10 @@
 #define UTILS_MACROS_H_
 
 #define UNUSED(object) (void)object
+#define UTILS_DELETE(p_object) {\
+    delete p_object; \
+    p_object = 0; \
+}
 
 #endif
 

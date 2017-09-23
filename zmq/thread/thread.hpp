@@ -1,7 +1,7 @@
 /*******************************************************
  @Author: zhezhaoxu
  @Created Time : Wed 20 Sep 2017 07:43:50 PM CST
- @File Name: thread.h
+ @File Name: thread.hpp
  @Description: from libzmq/src/thread.hpp
  ******************************************************/
 
@@ -21,9 +21,9 @@ typedef void(thread_fn)(void *);
 //  to the destruction process: Thread should be terminated before object
 //  destruction begins, otherwise it can access half-destructed object.
 
-class thread_t {
+class uthread_t {
 public:
-	inline thread_t() : tfn(NULL), arg(NULL) {}
+	inline uthread_t() : tfn(NULL), arg(NULL) {}
 
 	//  Creates OS thread. 'tfn' is main thread function. It'll be passed
 	//  'arg' as an argument.
@@ -44,8 +44,8 @@ public:
 private:
 	pthread_t descriptor;
 
-	thread_t(const thread_t &);
-	const thread_t &operator=(const thread_t &);
+	uthread_t(const uthread_t &);
+	const uthread_t &operator=(const uthread_t &);
 };
 }
 

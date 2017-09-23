@@ -5,7 +5,7 @@
  @Description: from libzmq/src/thread.cpp
  ******************************************************/
 
-#include "thread.h"
+#include "thread.hpp"
 #include "error/err.h"
 #include "macros/macros.h"
 
@@ -22,25 +22,25 @@ static void *thread_routine(void *arg_) {
 	rc = pthread_sigmask(SIG_BLOCK, &signal_set, NULL);
 	posix_assert(rc);
 
-	utils::thread_t *self = (utils::thread_t *)arg_;
+	utils::uthread_t *self = (utils::uthread_t *)arg_;
 	self->tfn(self->arg);
 	return NULL;
 }
 }
 
-void utils::thread_t::start(thread_fn *tfn_, void *arg_) {
+void utils::uthread_t::start(thread_fn *tfn_, void *arg_) {
 	tfn = tfn_;
 	arg = arg_;
 	int rc = pthread_create(&descriptor, NULL, thread_routine, this);
 	posix_assert(rc);
 }
 
-void utils::thread_t::stop() {
+void utils::uthread_t::stop() {
 	int rc = pthread_join(descriptor, NULL);
 	posix_assert(rc);
 }
 
-void utils::thread_t::setSchedulingParameters(int priority_,
+void utils::uthread_t::setSchedulingParameters(int priority_,
 											  int schedulingPolicy_) {
 #if defined _POSIX_THREAD_PRIORITY_SCHEDULING && \
 	_POSIX_THREAD_PRIORITY_SCHEDULING >= 0

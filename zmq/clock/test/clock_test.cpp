@@ -12,14 +12,14 @@
 // 比较 now_us() 和 now_ms() 效率
 static const int loop_times = 10000000;
 TEST(CLOCK, now_us) {
-	utils::clock_t clock;
+	utils::uclock_t clock;
 	for (int i = 0; i < loop_times; ++i) {
 		clock.now_us();
 	}
 }
 
 TEST(CLOCK, now_ms) {
-	utils::clock_t clock;
+	utils::uclock_t clock;
 	for (int i = 0; i < loop_times; ++i) {
 		clock.now_ms();
 	}

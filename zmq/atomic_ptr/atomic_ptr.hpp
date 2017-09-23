@@ -8,7 +8,7 @@
 #ifndef UTILS_ATOMIC_PTR_H_
 #define UTILS_ATOMIC_PTR_H_
 
-// 保留以下兼容性的宏, 手动为本机指定版本
+// TODO 人工指定
 #define UTILS_CXX11 1
 #define UTILS_HAVE_ATOMIC_INTRINSICS 1
 
