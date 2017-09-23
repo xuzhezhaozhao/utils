@@ -113,6 +113,10 @@ public:
 		//  During pipe's lifetime r should never be NULL, however,
 		//  it can happen during pipe shutdown when items
 		//  are being deallocated.
+		//  正确用法是当read()返回false时 reader 进程进入asleep，等待writer()
+		//  线程唤醒, 这样不会出现 r 为 NULL 的情况.
+		//  若read()返回false，reader进程不sleep，继续read(), 且此时
+		//  writer线程没有生产新元素时，指针 r 也会为 NULL.
 		if (&queue.front() == r || !r) {
 			return false;
 		}
