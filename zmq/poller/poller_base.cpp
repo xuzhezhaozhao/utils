@@ -22,14 +22,13 @@ int utils::poller_base_t::get_load() { return load.get(); }
 void utils::poller_base_t::adjust_load(int amount_) {
 	if (amount_ > 0) {
 		load.add(amount_);
-	}
-	else if (amount_ < 0) {
+	} else if (amount_ < 0) {
 		load.sub(-amount_);
 	}
 }
 
 void utils::poller_base_t::add_timer(int timeout_, i_poll_events *sink_,
-								   int id_) {
+									 int id_) {
 	uint64_t expiration = clock.now_ms() + timeout_;
 	timer_info_t info = {sink_, id_};
 	timers.insert(timers_t::value_type(expiration, info));

@@ -107,17 +107,11 @@ static void start_thread(utils::uthread_t &thread_, utils::thread_fn *tfn_,
 	thread_.setSchedulingParameters(thread_priority, thread_sched_policy);
 }
 
-void utils::epoll_t::start() {
-	start_thread(worker, worker_routine, this);
-}
+void utils::epoll_t::start() { start_thread(worker, worker_routine, this); }
 
-void utils::epoll_t::stop() {
-	stopping = true;
-}
+void utils::epoll_t::stop() { stopping = true; }
 
-int utils::epoll_t::max_fds() {
-	return -1;
-}
+int utils::epoll_t::max_fds() { return -1; }
 
 void utils::epoll_t::loop() {
 	epoll_event ev_buf[max_io_events];
@@ -138,12 +132,17 @@ void utils::epoll_t::loop() {
 			poll_entry_t *pe = ((poll_entry_t *)ev_buf[i].data.ptr);
 
 			if (pe->fd == retired_fd) continue;
-			if (ev_buf[i].events & (EPOLLERR | EPOLLHUP))
+			if (ev_buf[i].events & (EPOLLERR | EPOLLHUP)) {
 				pe->events->in_event();
+			}
 			if (pe->fd == retired_fd) continue;
-			if (ev_buf[i].events & EPOLLOUT) pe->events->out_event();
+			if (ev_buf[i].events & EPOLLOUT) {
+				pe->events->out_event();
+			}
 			if (pe->fd == retired_fd) continue;
-			if (ev_buf[i].events & EPOLLIN) pe->events->in_event();
+			if (ev_buf[i].events & EPOLLIN) {
+				pe->events->in_event();
+			}
 		}
 
 		//  Destroy retired event sources.
@@ -157,6 +156,4 @@ void utils::epoll_t::loop() {
 	}
 }
 
-void utils::epoll_t::worker_routine(void *arg_) {
-	((epoll_t *)arg_)->loop();
-}
+void utils::epoll_t::worker_routine(void *arg_) { ((epoll_t *)arg_)->loop(); }
