@@ -86,6 +86,7 @@ public:
 			//  care about thread-safeness and update c in non-atomic
 			//  manner. We'll return false to let the caller know
 			//  that reader is sleeping.
+			//  'c' 为 NULL 表示 reader 没有 item 可读，所以会 asleep
 			c.set(f);
 			return false;
 		}
