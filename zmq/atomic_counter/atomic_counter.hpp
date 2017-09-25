@@ -5,6 +5,9 @@
  @Description: from libzmq/src/atomic_counter.hpp
  ******************************************************/
 
+#ifndef UTILS_ZMQ_ATOMIC_COUNTER_H_
+#define UTILS_ZMQ_ATOMIC_COUNTER_H_
+
 #include <stdint.h>
 
 // TODO 人工指定
@@ -186,3 +189,5 @@ private:
 #undef UTILS_ATOMIC_COUNTER_WINDOWS
 #undef UTILS_ATOMIC_COUNTER_ATOMIC_H
 #undef UTILS_ATOMIC_COUNTER_TILE
+
+#endif

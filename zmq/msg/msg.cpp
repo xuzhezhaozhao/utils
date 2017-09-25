@@ -212,7 +212,7 @@ int utils::msg_t::close() {
 
 	if (u.base.metadata != NULL) {
 		if (u.base.metadata->drop_ref()) {
-			LIButils_DELETE(u.base.metadata);
+			UTILS_DELETE(u.base.metadata);
 		}
 		u.base.metadata = NULL;
 	}
@@ -337,7 +337,7 @@ void utils::msg_t::set_metadata(utils::metadata_t *metadata_) {
 void utils::msg_t::reset_metadata() {
 	if (u.base.metadata) {
 		if (u.base.metadata->drop_ref()) {
-			LIButils_DELETE(u.base.metadata);
+			UTILS_DELETE(u.base.metadata);
 		}
 		u.base.metadata = NULL;
 	}
