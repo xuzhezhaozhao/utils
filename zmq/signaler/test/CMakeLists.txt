@@ -5,6 +5,6 @@ if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
 endif()
 
 add_executable(signaler_test signaler_test.cpp)
-target_link_libraries(signaler_test signaler ip gtest gtest_main pthread)
+target_link_libraries(signaler_test signaler ip gtest pthread)
 
 add_custom_target(unittest ./signaler_test DEPENDS signaler_test)

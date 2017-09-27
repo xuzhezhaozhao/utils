@@ -21,16 +21,16 @@ namespace utils {
 namespace str_helper {
 using namespace utils::str_helper;
 template <typename T>
-void appendToString(std::string& result, T value) {
+inline void appendToString(std::string& result, T value) {
 	result += valueToString(value);
 }
-void appendToString(std::string& result, char value) {
+inline void appendToString(std::string& result, char value) {
 	result += value;
 }
-void appendToString(std::string& result, const char* value) {
+inline void appendToString(std::string& result, const char* value) {
 	result += value;
 }
-void appendToString(std::string& result, const std::string value) {
+inline void appendToString(std::string& result, const std::string value) {
 	result += value;
 }
 

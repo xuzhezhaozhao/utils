@@ -5,6 +5,6 @@ if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
 endif()
 
 add_executable(ypipe_test ypipe_test.cpp)
-target_link_libraries(ypipe_test gtest gtest_main pthread)
+target_link_libraries(ypipe_test gtest pthread)
 
 add_custom_target(unittest ./ypipe_test DEPENDS ypipe_test)

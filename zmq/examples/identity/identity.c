@@ -1,0 +1,35 @@
+/*******************************************************
+ @Author: zhezhaoxu
+ @Created Time : Thu 05 Oct 2017 04:13:06 PM CST
+ @File Name: identity.c
+ @Description: ZMQ_ROUTER 套接字的连接身份identity 是可以设置的
+ ***************************************************/
+
+//  Demonstrate request-reply identities
+
+#include "../zhelpers.h"
+
+int main(void) {
+	void *context = zmq_ctx_new();
+	void *sink = zmq_socket(context, ZMQ_ROUTER);
+	zmq_bind(sink, "inproc://example");
+
+	//  First allow 0MQ to set the identity
+	void *anonymous = zmq_socket(context, ZMQ_REQ);
+	zmq_connect(anonymous, "inproc://example");
+	s_send(anonymous, "ROUTER uses a generated 5 byte identity");
+	s_dump(sink);
+
+	//  Then set the identity ourselves
+	void *identified = zmq_socket(context, ZMQ_REQ);
+	zmq_setsockopt(identified, ZMQ_IDENTITY, "PEER2", 5);
+	zmq_connect(identified, "inproc://example");
+	s_send(identified, "ROUTER socket uses REQ's socket identity");
+	s_dump(sink);
+
+	zmq_close(sink);
+	zmq_close(anonymous);
+	zmq_close(identified);
+	zmq_ctx_destroy(context);
+	return 0;
+}

@@ -14,7 +14,7 @@ set(JSONCPP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../deps/jsoncpp/)
 include_directories(SYSTEM ${JSONCPP_DIR}/dist)
 
 add_executable(jsoncpp_helper_test jsoncpp_helper_test.cpp ${JSONCPP_DIR}/dist/jsoncpp.cpp)
-target_link_libraries(jsoncpp_helper_test gtest gtest_main pthread)
+target_link_libraries(jsoncpp_helper_test gtest pthread)
 
 # unittest
 add_custom_target(unittest ./jsoncpp_helper_test

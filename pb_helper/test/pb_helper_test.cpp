@@ -6,10 +6,10 @@
  ******************************************************/
 
 #include "../pb_helper.hpp"
-#include "gtest/gtest.h"
-#include "json/json.h"
-#include "person.pb.h"
+#include "../build/test/person.pb.h"
 
+#include <gtest/gtest.h>
+#include <json/json.h>
 #include <iostream>
 
 using namespace utils::pb_helper;
@@ -37,10 +37,11 @@ TEST(PB_HELPER, protobufToJsonString) {
 	person.mutable_ticket()->Add(19680801);
 	person.mutable_ticket()->Add(19681006);
 
-	person.mutable_addr()->Add("zhangshu");
-	person.mutable_addr()->Add("wuhan");
-	person.mutable_addr()->Add("beijing");
-	person.mutable_addr()->Add("shenzheng");
+	person.add_addr("zhangshu");
+	person.add_addr("wuhan");
+	person.add_addr("beijing");
+	person.add_addr("shenzheng");
+
 
 	Json::CharReaderBuilder rbuilder;
 	Json::CharReader* read = rbuilder.newCharReader();
@@ -81,4 +82,9 @@ TEST(PB_HELPER, protobufToJsonString) {
 	ASSERT_TRUE(root["addr"][1] == "wuhan");
 	ASSERT_TRUE(root["addr"][2] == "beijing");
 	ASSERT_TRUE(root["addr"][3] == "shenzheng");
+}
+
+int main(int argc, char **argv) {
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
 }

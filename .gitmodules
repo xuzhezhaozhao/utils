@@ -25,3 +25,9 @@
 [submodule "deps/cppzmq"]
 	path = deps/cppzmq
 	url = https://github.com/zeromq/cppzmq
+[submodule "deps/czmq"]
+	path = deps/czmq
+	url = https://github.com/zeromq/czmq
+[submodule "deps/malamute"]
+	path = deps/malamute
+	url = https://github.com/zeromq/malamute

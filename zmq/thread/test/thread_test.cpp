@@ -5,7 +5,7 @@
  @Description:
  ******************************************************/
 #include "macros/macros.h"
-#include "../thread.h"
+#include "../thread.hpp"
 
 #include <stdio.h>
 #include <unistd.h>
@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
 	UNUSED(argc);
 	UNUSED(argv);
 
-	utils::thread_t th;
+	utils::uthread_t th;
 	int n = 30;
 	th.start(f, &n);
 	th.stop();

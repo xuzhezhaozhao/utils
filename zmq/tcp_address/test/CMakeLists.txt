@@ -5,6 +5,6 @@ if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
 endif()
 
 add_executable(tcp_address_test tcp_address_test.cpp)
-target_link_libraries(tcp_address_test tcp_address gtest gtest_main pthread)
+target_link_libraries(tcp_address_test tcp_address gtest pthread)
 
 add_custom_target(unittest ./tcp_address_test DEPENDS tcp_address_test)

@@ -24,3 +24,8 @@ TEST(CLOCK, now_ms) {
 		clock.now_ms();
 	}
 }
+
+int main(int argc, char **argv) {
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

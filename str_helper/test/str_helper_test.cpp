@@ -89,3 +89,8 @@ TEST(STR_STRING_HELPER, pack_string) {
 				 "1-true-a-abc-string-123456789012372352--32-23456-1234-123-"
 				 "123-123-123\n徐哲钊");
 }
+
+int main(int argc, char **argv) {
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

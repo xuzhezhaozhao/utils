@@ -18,3 +18,8 @@ TEST(SIGNALER, basic) {
 }
 
 // TODO use two threads
+
+int main(int argc, char **argv) {
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

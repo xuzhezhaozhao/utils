@@ -168,3 +168,7 @@ TEST(JSONCPP_HELPER, setarrayValue) {
 	EXPECT_TRUE(value["names"][3] == "ama");
 }
 
+int main(int argc, char **argv) {
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}
