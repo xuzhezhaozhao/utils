@@ -153,7 +153,7 @@ std::string valueToString(double value, bool useSpecialFloats,
 		// try to ensure we preserve the fact that this was given to us as a
 		// double on input
 		if (!strchr(buffer, '.') && !strchr(buffer, 'e')) {
-			strcat(buffer, ".0");
+			strncat(buffer, ".0", 2);
 		}
 
 	} else {
