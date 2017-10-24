@@ -82,9 +82,11 @@ void utils::tune_tcp_maxrt(int sockfd_, int timeout_) {
 
 	UNUSED(sockfd_);
 
+#if defined (TCP_USER_TIMEOUT)
 	int rc = setsockopt(sockfd_, IPPROTO_TCP, TCP_USER_TIMEOUT, &timeout_,
 						sizeof(timeout_));
 	errno_assert(rc == 0);
+#endif
 }
 
 int utils::tcp_write(int s_, const void *data_, size_t size_) {
