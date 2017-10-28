@@ -8,8 +8,10 @@ endif()
 include_directories(../../deps/googletest/googletest/include)
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../deps/googletest/build/googlemock/gtest/)
 
-include_directories(../../deps/)
-include_directories(../../deps/lua/)
+include_directories(../../deps/lua-5.3.4/src)
 
 add_library(hello SHARED hello.c)
 add_library(mylib SHARED mylib.c)
+
+add_library(ext ext.c)
+add_library(test_ext SHARED test_ext.c)
