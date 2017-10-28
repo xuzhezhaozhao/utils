@@ -31,3 +31,6 @@
 [submodule "deps/malamute"]
 	path = deps/malamute
 	url = https://github.com/zeromq/malamute
+[submodule "deps/lua"]
+	path = deps/lua
+	url = https://github.com/lua/lua
