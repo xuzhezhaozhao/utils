@@ -9,6 +9,7 @@ include_directories(../../deps/googletest/googletest/include)
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../deps/googletest/build/googlemock/gtest/)
 
 include_directories(../../deps/)
+include_directories(../../deps/lua/)
 
-add_library(lbindings lbindings.c)
-add_subdirectory(test)
+add_library(hello SHARED hello.c)
+add_library(mylib SHARED mylib.c)

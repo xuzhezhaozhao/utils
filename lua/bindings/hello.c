@@ -9,18 +9,16 @@
 #include <lauxlib.h>
 #include <lualib.h>
 
-static int hello(lua_State *L) {
+static int l_hello(lua_State *L) {
 	lua_pushliteral(L, "Hello World!");
 
 	return 1;
 }
 
-static const luaL_Reg hellolib[] = {
-	{"hello", hello},
-};
+static const struct luaL_Reg libhello[] = {{"hello", l_hello}, {NULL, NULL}};
 
-LUAMOD_API int luaopen_hello(lua_State *L) {
-	luaL_newlib(L, hellolib);
+extern int luaopen_libhello(lua_State *L) {
+	luaL_newlib(L, libhello);
 
 	return 1;
 }
