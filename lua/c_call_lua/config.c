@@ -10,6 +10,7 @@
 #include <lualib.h>
 
 int load(lua_State *L, const char *filename, int *width, int *height) {
+	/* see also luaL_loadbuffer() and luaL_loadstring() */
 	if (luaL_loadfile(L, filename) || lua_pcall(L, 0, 0, 0)) {
 		fprintf(stderr, "'load file %s failed. err msg: %s\n", filename,
 				lua_tostring(L, -1));
