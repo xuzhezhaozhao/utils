@@ -39,7 +39,7 @@ static const struct luaL_Reg mylib[] = {
  * 1、使用"luaopen_"作为前缀。
  * 2、前缀之后的名字将作为"require"的参数。
  */
-extern int luaopen_mylib(lua_State* L)
+extern int luaopen_libmylib(lua_State* L)
 {
     /* void luaL_newlib (lua_State *L, const luaL_Reg l[]);
      * 创建一个新的"table"，并将"l"中所列出的函数注册为"table"的域。
