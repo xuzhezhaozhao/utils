@@ -5,6 +5,9 @@
  @Description: from libzmq/src/mutex.hpp
  ******************************************************/
 
+#ifndef UTILS_MUTEX_HPP_
+#define UTILS_MUTEX_HPP_
+
 #include "error/err.h"
 
 #include <pthread.h>
@@ -98,3 +101,5 @@ private:
 	const scoped_optional_lock_t& operator=(const scoped_lock_t&);
 };
 }
+
+#endif
