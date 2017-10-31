@@ -17,6 +17,11 @@ public:
 	Buffer();
 	~Buffer();
 
+	// returns a pointer to a free area with at least 'sz' bytes
+	// returns NULL if the function needs allocate storage and fails, and
+	// current buffer is still valid
+	char* prepbuffsize(size_t sz);
+
 	// add string s to buffer
 	bool addstring(const char* s, size_t sz);
 
@@ -32,11 +37,6 @@ private:
 
 	// check whether buffer use inner storage as a buffer
 	bool isbuffonstack() const { return data_ == initdata_; }
-
-	// returns a pointer to a free area with at least 'sz' bytes
-	// returns NULL if the function needs allocate storage and fails, and
-	// current buffer is still valid
-	char* prepbuffsize(size_t sz);
 
 	char* data_;						// buffer address
 	size_t size_;						// size of allocated storage
