@@ -6,5 +6,12 @@ endif()
 
 set(CMAKE_CXX_FLAGS "-g -Wall -std=c++0x")
 
+
 add_library(buffer buffer.cpp)
 add_subdirectory(test)
+
+enable_testing()
+add_test(
+	NAME buffer_test
+	#CONFIGURATIONS Debug
+	COMMAND buffer_test)
