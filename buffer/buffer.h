@@ -14,8 +14,6 @@ namespace utils {
 
 class Buffer {
 public:
-	static const int DEFAULT_BUFFERSIZE = 8192;
-
 	Buffer();
 	~Buffer();
 
@@ -30,6 +28,8 @@ public:
 	char* data() const { return data_; }
 
 private:
+	static const int DEFAULT_BUFFERSIZE = 8192;
+
 	// check whether buffer use inner storage as a buffer
 	bool isbuffonstack() const { return data_ == initdata_; }
 
