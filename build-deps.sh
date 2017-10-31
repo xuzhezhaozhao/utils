@@ -41,3 +41,9 @@ echo "building deps/jsoncpp ..."
 pre_dir=`pwd`
 cd deps/jsoncpp && python amalgamate.py
 cd $pre_dir
+
+
+echo "building deps/leveldb ..."
+pre_dir=`pwd`
+cd deps/leveldb && make
+cd $pre_dir

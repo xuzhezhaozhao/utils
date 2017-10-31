@@ -117,6 +117,8 @@ flags = [
 
 '-I',
 './zmq',
+'-I',
+'./deps/leveldb/include/',
 ]
 
 
