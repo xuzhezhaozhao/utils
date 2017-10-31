@@ -35,3 +35,6 @@
 	path = deps/lua
 	url = https://github.com/lua/lua
 	ignore = dirty
+[submodule "deps/leveldb"]
+	path = deps/leveldb
+	url = https://github.com/google/leveldb
