@@ -3,7 +3,9 @@
 echo "building deps/lua-5.3.4 ..."
 pre_dir=`pwd`
 cd deps/lua-5.3.4 && mkdir -p build && cd build && cmake .. && make
+cd ../ && make linux
 cd $pre_dir
+
 
 echo "building deps/lua ..."
 pre_dir=`pwd`
