@@ -11,7 +11,5 @@ add_library(buffer buffer.cpp)
 add_subdirectory(test)
 
 enable_testing()
-add_test(
-	NAME buffer_test
-	#CONFIGURATIONS Debug
+add_test( NAME buffer_test
 	COMMAND buffer_test)
