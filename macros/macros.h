@@ -14,5 +14,13 @@
     p_object = 0; \
 }
 
+
+#if defined(__clang__) || defined(__GNUC__)
+# define UTILS_DEPRECATED(msg) __attribute__((__deprecated__(msg)))
+#elif defined(_MSC_VER)
+# define UTILS_DEPRECATED(msg) __declspec(deprecated(msg))
+#else
+# define UTILS_DEPRECATED(msg)
 #endif
 
+#endif
