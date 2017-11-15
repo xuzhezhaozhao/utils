@@ -6,9 +6,9 @@
 
 int main (void)
 {
-    printf ("Connecting to hello world server...\n");
     void *context = zmq_ctx_new ();
     void *requester = zmq_socket (context, ZMQ_REQ);
+    printf ("Connecting to hello world server...\n");
     zmq_connect (requester, "tcp://localhost:5555");
 
     int request_nbr;
