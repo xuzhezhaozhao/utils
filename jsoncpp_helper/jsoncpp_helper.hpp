@@ -8,7 +8,7 @@
 /**
  * APIs:
  * 命名空间 utils::jsoncpp_helper;
- * 
+ *
  * 1. 校验 json 字段
  * template <typename... Args>
  * bool checkJsonArgs(const Json::Value& value, Args... args);
@@ -45,14 +45,14 @@
  * 	string_tag
  * 	array_tag
  * 	object_tag
- * 	
+ *
  * 2. 设置 json 字段数据
  * template <typename... Args>
  * void setJsonValue(Json::Value& value, Args... args);
- * 
+ *
  * 参数类型为变长模板参数,第一个参数是 Json::Value 类型, 为待设置的json数据;
  * 之后的参数为多个 (key, value) 对的形式. 例如：
- * 
+ *
  *	using namespace utils::jsoncpp_helper;
  *	Json::Value value;
  *	setJsonValue(value, "name", "zhezhaoxu", "id", 158, "good", true, "score",
@@ -63,11 +63,11 @@
  *	ASSERT_TRUE(value["id"] == 158);
  *	ASSERT_TRUE(value["good"] == true);
  *	ASSERT_TRUE(value["score"] == 95.5);
- * 
+ *
  * 3. 设置 json 数组数据
  * template <typename... Args>
  * void setJsonArrayValue(Json::Value& arrayValue, Args... args);
- * 
+ *
  * 参数类型为变长模板参数, 第一个参数是 Json::Value 类型, 为待设置的json数据;
  * 之后的参数有两种格式：
  * (1) 多个 value 的形式. 例如:
@@ -80,7 +80,7 @@
  * 	ASSERT_TRUE(checkJsonArgs(value["array"][2] == "zhezhao"));
  * 	ASSERT_TRUE(checkJsonArgs(value["array"][3] == true));
  * 	ASSERT_TRUE(checkJsonArgs(value["array"][4] == 95.5));
- * 	
+ *
  * 	(2) (intput, N) 的形式
  * 	input 为输入数组, N为数组大小; 例如:
  *	std::vector<int> tickets = {1, 2, 3};
@@ -89,7 +89,7 @@
  *	EXPECT_TRUE(value["tickets"][0] == 1);
  *	EXPECT_TRUE(value["tickets"][1] == 2);
  *	EXPECT_TRUE(value["tickets"][2] == 3);
- * 
+ *
  */
 
 
@@ -129,7 +129,7 @@ static const struct array_tag_t array_tag = {};
 static const struct object_tag_t object_tag = {};
 
 // base
-bool __checkJsonArgs(const Json::Value&) { return true; }
+inline bool __checkJsonArgs(const Json::Value&) { return true; }
 
 #define DEFINE_checkJsonArgs(type1, type2)                              \
 	template <typename T, typename... Args>                             \
@@ -198,7 +198,7 @@ struct is_jsontype<Json::Value> {
 };
 
 // base
-void __setJsonValue(Json::Value&) {}
+inline void __setJsonValue(Json::Value&) {}
 
 template <typename T, typename... Args,
 		  typename = typename std::enable_if<is_jsontype<
@@ -210,7 +210,7 @@ void __setJsonValue(Json::Value& value, const char* key, T&& val,
 }
 
 // base
-void __setJsonArrayValue(Json::Value&) {}
+inline void __setJsonArrayValue(Json::Value&) {}
 
 template <typename T, typename... Args,
 		  typename = typename std::enable_if<is_jsontype<
